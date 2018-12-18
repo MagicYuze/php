@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Sign In & Sign Up</title>
+<title>Single</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,6 +17,17 @@
 <!-- js -->
 <script src="js/jquery-1.11.1.min.js"></script>
 <!-- //js -->
+ <script src='js/okzoom.js'></script>
+  <script>
+    $(function(){
+      $('#example').okzoom({
+        width: 150,
+        height: 150,
+        border: "1px solid black",
+        shadow: "0 0 5px #000"
+      });
+    });
+  </script>
 <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
 <!-- start-smoth-scrolling -->
@@ -34,55 +45,42 @@
 </head>
 	
 <body>
-<?php include "head.php" ?>
-		<div class="w3l_banner_nav_right">
-<!-- login -->
-		<div class="w3_login">
-			<h3>Sign In & Sign Up</h3>
-			<div class="w3_login_module">
-				<div class="module form-module">
-				  <div class="toggle"><i class="fa fa-times fa-pencil"></i>
-					<div class="tooltip">跳转</div>
-				  </div>
-				  <div class="form">
-					<h2>Login to your account</h2>
-					<form action="#" method="post">
-					  <input type="text" name="Username" placeholder="Username" required=" ">
-					  <input type="password" name="Password" placeholder="Password" required=" ">
-					  <input type="submit" value="Login">
-					</form>
-				  </div>
-				  <div class="form">
-					<h2>Create an account</h2>
-					<form action="#" method="post">
-					  <input type="text" name="Username" placeholder="Username" required=" ">
-					  <input type="password" name="Password" placeholder="Password" required=" ">
-					  <input type="email" name="Email" placeholder="Email Address" required=" ">
-					  <input type="text" name="Phone" placeholder="Phone Number" required=" ">
-					  <input type="submit" value="Register">
-					</form>
-				  </div>
-				  <div class="cta"><a href="#">Forgot your password?</a></div>
-				</div>
+<!-- header -->
+	<?php include "head.php" ?>
+		<div class="w3l_banner_nav_right" style="height: 600px">
+			<div class="w3l_banner_nav_right_banner3">
+				<h3>Best Deals For New Products<span class="blink_me"></span></h3>
 			</div>
-			<script>
-				$('.toggle').click(function(){
-				  // Switches the Icon
-				  $(this).children('i').toggleClass('fa-pencil');
-				  // Switches the forms  
-				  $('.form').animate({
-					height: "toggle",
-					'padding-top': 'toggle',
-					'padding-bottom': 'toggle',
-					opacity: "toggle"
-				  }, "slow");
-				});
-			</script>
-		</div>
-<!-- //login -->
+			<div class="agileinfo_single">
+				<h5>charminar pulao basmati rice 5 kg</h5>
+				<div class="col-md-4 agileinfo_single_left">
+					<img id="example" src="images/76.png" alt=" " class="img-responsive" />
+				</div>
+				<div class="col-md-8 agileinfo_single_right">
+					<br/>
+					<div class="w3agile_description">
+						<h4>Description :</h4>
+						<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui 
+							officia deserunt mollit anim id est laborum.Duis aute irure dolor in 
+							reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+							pariatur.</p>
+					</div>
+					<div class="snipcart-item block">
+						<div class="snipcart-thumb agileinfo_single_right_snipcart">
+							<h4>$21.00 <span>$25.00</span></h4>
+						</div>
+						<div class="snipcart-details agileinfo_single_right_details">
+							<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="76" data-name="Pulao basmati rice" data-summary="summary 76" data-price="21.00" data-quantity="1" data-image="images/76.png">Add to Cart</button>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
 		</div>
 		<div class="clearfix"></div>
+	</div>
 <!-- //banner -->
+
 <!-- footer -->
 	<?php include "foot.php" ?>
 <!-- //footer -->

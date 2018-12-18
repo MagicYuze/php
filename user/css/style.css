@@ -63,10 +63,10 @@ span.glyphicon.glyphicon-shopping-cart.my-cart-icon.my-cart-icon-affix {
 i.badge.badge-notify.my-cart-badge {
     font-style: normal;
     background: #FA1818;
-    font-size: 14px;
+    font-size: 8px;
     position: absolute;
     top: -10px;
-    right:-22px;
+    right:0px;
 }
 .product_list_header span {
     font-size: 1em;

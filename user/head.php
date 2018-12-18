@@ -65,8 +65,15 @@
 			</div>
 			<div class="w3ls_logo_products_left1">
 				<ul class="special_items">
-					<li><a href="events.html">购物车</a><i>/</i></li>
-					<li><a href="about.html">订单</a><i>/</i></li>
+					<li>	
+						<span class="glyphicon glyphicon-shopping-cart my-cart-icon" style="cursor: pointer">
+							<a href="javascript:void(0)">
+								<i class="badge badge-notify my-cart-badge"></i>&nbsp;&nbsp;购物车
+							</a>
+						</span><i>/</i>
+					</li>
+					<li><a href="about.html"><img src="./images/orderform.jpg" width="16px" height="16px" style="margin-top:-2px;">&nbsp;订单</a><i>/</i></li>
+
 					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>

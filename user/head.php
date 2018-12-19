@@ -31,6 +31,7 @@
 							<ul class="dropdown-menu drp-mnu">
 								<li><a href="login.php">Login</a></li> 
 								<li><a href="login.php">Sign Up</a></li>
+								<li><a href="#">Log off</a></li>
 							</ul>
 						</div>                  
 					</div>	
@@ -161,3 +162,9 @@
 			</nav>
 		</div>
 	</div>
+
+<style>
+	.snipcart-thumb h4{
+		margin-inline-start: 45%;
+	}
+</style>

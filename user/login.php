@@ -37,7 +37,7 @@
 <?php include "head.php" ?>
 		<div class="w3l_banner_nav_right">
 <!-- login -->
-		<div class="w3_login">
+		<div class="w3_login" id="lr">
 			<h3>Sign In & Sign Up</h3>
 			<div class="w3_login_module">
 				<div class="module form-module">
@@ -62,9 +62,17 @@
 					  <input type="submit" value="Register">
 					</form>
 				  </div>
-				  <div class="cta"><a href="#">Forgot your password?</a></div>
+				  <div class="cta"><a href="javascript:void(0)" id="change">Forgot your password?</a></div>
 				</div>
 			</div>
+
+			<script>
+				$('#change').click(function(){
+					$('#lr').slideUp("slow");
+					$('#forget').css("display","block");
+				});
+			</script>
+
 			<script>
 				$('.toggle').click(function(){
 				  // Switches the Icon
@@ -76,6 +84,33 @@
 					'padding-bottom': 'toggle',
 					opacity: "toggle"
 				  }, "slow");
+				});
+			</script>
+		</div>
+
+		<div class="w3_login" style="display:none" id="forget">    <!--忘记密码-->
+			<h3>Forget your password</h3>
+			<div class="w3_login_module">
+				<div class="module form-module">
+					<div class="toggle"><i class="fa fa-times fa-pencil"></i>
+				  	</div>
+					<div class="form">
+						<h2>Change your password</h2>
+						<form action="#" method="post">
+					 		<input type="text" name="Username" placeholder="Username" required=" ">
+					  		<input type="email" name="Email Address" placeholder="Email Address" required=" ">
+					  		<input type="text" name="Verification Code" placeholder="Verification Code" required=" ">
+					  		<input type="password" name="New Password" placeholder="New Password" required=" ">
+					 	 	<input type="submit" value="Change">
+						</form>
+				 	</div>
+				 	<div class="cta"><a href="javascript:void(0)" id="lg">Login?</a></div>
+				</div>
+			</div>
+			<script>
+				$('#lg').click(function(){
+					$('#lr').slideDown("slow");
+					$('#forget').slideUp("slow");
 				});
 			</script>
 		</div>

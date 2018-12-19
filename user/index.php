@@ -31,10 +31,8 @@
 	});
 </script>
 <!-- start-smoth-scrolling -->
-</head>
-	
+</head>	
 <body>
-	
 <?php include "head.php" ?>
 		<div class="w3l_banner_nav_right">
 			<section class="slider">
@@ -132,7 +130,7 @@
 										<div class="snipcart-thumb">
 											<a href="single.html"><img title=" " alt=" " src="images/1.png" /></a>		
 											<p>fortune sunflower oil</p>
-											<h4>$7.99 <span>$10.00</span></h4>
+											<h4>$7.99</h4>
 										</div>
 										<div class="snipcart-details top_brand_home_details">
 											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="1" data-name="Fortune sunflower oil" data-summary="summary 1" data-price="7.99" data-quantity="1" data-image="images/1.png">Add to Cart</button>
@@ -152,7 +150,7 @@
 										<div class="snipcart-thumb">
 											<a href="single.html"><img title=" " alt=" " src="images/3.png" /></a>		
 											<p>basmati rise (5 Kg)</p>
-											<h4>$11.99 <span>$15.00</span></h4>
+											<h4>$11.99</h4>
 										</div>
 										<div class="snipcart-details top_brand_home_details">
 											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="2" data-name="Indian gate basmati rise" data-summary="summary 2" data-price="11.99" data-quantity="1" data-image="images/3.png">Add to Cart</button>
@@ -175,7 +173,7 @@
 										<div class="snipcart-thumb">
 											<a href="single.html"><img src="images/2.png" alt=" " class="img-responsive" /></a>
 											<p>Pepsi soft drink (2 Ltr)</p>
-											<h4>$8.00 <span>$10.00</span></h4>
+											<h4>$8.00</h4>
 										</div>
 										<div class="snipcart-details top_brand_home_details">
 											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="3" data-name="Pepsi soft drink bottles" data-summary="summary 3" data-price="8.00" data-quantity="1" data-image="images/2.png">Add to Cart</button>
@@ -198,7 +196,7 @@
 										<div class="snipcart-thumb">
 											<a href="single.html"><img src="images/4.png" alt=" " class="img-responsive" /></a>
 											<p>dogs food (4 Kg)</p>
-											<h4>$9.00 <span>$11.00</span></h4>
+											<h4>$9.00</h4>
 										</div>
 										<div class="snipcart-details top_brand_home_details">
 											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="4" data-name="Dogs food" data-summary="summary 4" data-price="9.00" data-quantity="1" data-image="images/4.png">Add to Cart</button>

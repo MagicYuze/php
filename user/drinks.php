@@ -56,7 +56,7 @@
 										<div class="snipcart-thumb">
 											<a href="single.html"><img src="images/49.png" alt=" " class="img-responsive" /></a>
 											<p>orange soft drink (250 ml)</p>
-											<h4>$5.00 <span>$7.00</span></h4>
+											<h4>$5.00</h4>
 										</div>
 										<div class="snipcart-details">
 											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="49" data-name="Orange soft drink" data-summary="summary 49" data-price="5.00" data-quantity="1" data-image="images/49.png">Add to Cart</button>

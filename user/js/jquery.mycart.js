@@ -139,13 +139,13 @@
       });
       return total;
     }
-    var getTotalPrice = function(){
+    var getTotalPrice = function(){    //total价格
       var products = getAllProducts();
       var total = 0;
       $.each(products, function(index, value){
         total += value.quantity * value.price;
       });
-      return total;
+      return total.toFixed(2);   //四舍无入，保留两位小数
     }
 
     objToReturn.getAllProducts = getAllProducts;
@@ -191,8 +191,7 @@
         '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
         '</div>' +
         '<div class="modal-footer">' +
-        '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-
+        '<button type="button" class="btn btn-default">立即付款</button>&nbsp;<button type="button" class="btn btn-default">确认修改</button>' + 
         '</div>' +
         '</div>' +
         '</div>' +
@@ -207,6 +206,7 @@
       var products = ProductManager.getAllProducts();
       $.each(products, function(){
         var total = this.quantity * this.price;
+        total.toFixed(2);    //四舍五入，保留两位小数
         $cartTable.append(
           '<tr title="' + this.summary + '" data-id="' + this.id + '" data-price="' + this.price + '">' +
           '<td class="text-center" style="width: 30px;"><img width="30px" height="30px" src="' + this.image + '"/></td>' +
@@ -231,7 +231,7 @@
         : '<div class="alert alert-danger" role="alert" id="' + idEmptyCartMessage + '">Your cart is empty</div>'
       );
 
-      var discountPrice = options.getDiscountPrice(products, ProductManager.getTotalPrice(), ProductManager.getTotalQuantity());
+      /*var discountPrice = options.getDiscountPrice(products, ProductManager.getTotalPrice(), ProductManager.getTotalQuantity());
       if(products.length && discountPrice !== null) {
         $cartTable.append(
           '<tr style="color: red">' +
@@ -243,10 +243,10 @@
           '<td></td>' +
           '</tr>'
         );
-      }
+      }*/
 
       showGrandTotal();
-      showDiscountPrice();
+      //showDiscountPrice();
     }
     var showModal = function(){
       drawTable();
@@ -289,7 +289,7 @@
       var id = $(this).closest("tr").data("id");
       var quantity = $(this).val();
 
-      $(this).parent("td").next("." + classProductTotal).text("$" + price * quantity);
+      $(this).parent("td").next("." + classProductTotal).text("$" + (price * quantity).toFixed(2));
       ProductManager.updatePoduct(id, quantity);
 
       $cartBadge.text(ProductManager.getTotalQuantity());

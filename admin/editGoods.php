@@ -1,24 +1,80 @@
 <?php 
 	include "checkLogin.php";
-	$cname = "";
+	$gname = "";
+	$gid = 0;
 	$cid = 0;
-	if(isset($_GET['cid'])){
+	$price = "";
+	$cname = "-- 请选择类别 --";
+	$introduction = "";
+	$picture = "";
+
+
+	$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
+    if (!$con){
+        die('Could not connect: ' . mysql_error());
+    }
+    mysql_select_db("phpfinal",$con);//选择数据库
+
+    $sql = 'select * from category';
+    $res = mysql_query($sql);
+    $category = array();
+    if(mysql_num_rows($res)>0){
+       while ($row = mysql_fetch_assoc($res) )
+       		$category[$row['cid']] = $row['cname'];
+    }
+
+
+	if(isset($_GET['gid'])){
 		$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
 	    if (!$con){
 	        die('Could not connect: ' . mysql_error());
 	    }
 	    mysql_select_db("phpfinal",$con);//选择数据库
-	    $sql = 'select * from category where cid ='.$_GET['cid'];
+	    $sql = 'select * from goods where gid ='.$_GET['gid'];
 	    $res = mysql_query($sql);
 	    $row = mysql_fetch_array($res);
-	    $cname = $row['cname'];
-	    $cid = $row['cid'];
+	    $picture = $row['picture'];
+	    $gname = $row['gname'];
+	    $gid = $row['gid'];
+	    $price = $row['price'];
+		$cid = $row['cid'];
+		$cname = $category[$cid];
+		$introduction = $row['introduction'];
 	    mysql_close($con);
 	}
-	if(isset($_POST['cname'])){
-		$cname = $_POST['cname'];
+
+	if(isset($_POST['cid'])&&$_POST['cid']!=0){
+		$gname = $_POST['gname'];
+		$gid = $_POST['gid'];
+		$price = $_POST['price'];
 		$cid = $_POST['cid'];
-		
+		// $picture = "";
+		$state = 1;
+		$gcount = 0;	
+		$introduction = $_POST['introduction'];
+
+		if(isset($_FILES['image'])){
+			$file = $_FILES['image'];
+			$error = $file['error'];
+			switch ($error) {
+				case 0:
+					$fileName = $file['name'];
+					$fileType = $file['type'];
+					$fileSize = $file['size'];
+					$fileTmp_name = $file['tmp_name'];
+
+					$destination = "./img/goods/".$fileName;
+					move_uploaded_file($fileTmp_name,iconv('UTF-8','gbk',$destination));
+					$picture = "/php/admin/img/goods/".$fileName; 
+					break;
+				default:
+					if(!empty($_POST['picture']))
+						$picture = $_POST['picture'];
+					else
+						$picture = "/php/admin/img/goods/default.jpg";
+			}
+		}  
+
 		$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
 	    if (!$con){
 	        die('Could not connect: ' . mysql_error());
@@ -26,29 +82,30 @@
 	    mysql_select_db("phpfinal",$con);//选择数据库
 
 
-	    if($cid == 0){
-	    	$res = mysql_query('select * from category order by cid DESC');
-       		$cid = mysql_fetch_assoc($res)['cid']+1;
-		    $sql = 'INSERT INTO  category (cid,cname,state) VALUES ('.$cid.',"'.$cname.'",1)';
+	    if($gid == 0){
+	    	$res = mysql_query('select * from goods order by gid DESC');
+       		$gid = mysql_fetch_assoc($res)['gid']+1;
+		    $sql = 'INSERT INTO  goods (gid,gname,cid,gcount,picture,introduction,price,state) VALUES ('.$gid.',"'.$gname.'",'.$cid.',0,"'.$picture.'","'.$introduction.'",'.$price.',1);';
 		    $res = mysql_query($sql);
 
 		    if(mysql_affected_rows()>0){
-		    	echo '<script>alert("恭喜您，添加分类成功！");window.location="showCategory.php"</script>';
+		    	echo '<script>alert("恭喜您，添加商品成功！");window.location="showGoods.php"</script>';
 		    }else{
-		    	echo "<script>alert('$res');</script>";
+		    	echo '<script>alert("不好意思，添加商品失败……");</script>';
+		    	echo $sql;
 		    }
 		    mysql_close($con);
 	    }else{
-	    	$sql = 'UPDATE category SET cname = "'.$cname.'"WHERE cid = '.$cid;
+	    	$sql = 'UPDATE goods SET gname = "'.$gname.'",cid='.$cid.',picture="'.$picture.'",introduction="'.$introduction.'",price='.$price.' WHERE gid = '.$gid;
 	    	$res = mysql_query($sql);
 	    	if(mysql_affected_rows()>0){
-		    	echo '<script>alert("恭喜您，修改分类信息成功！");window.location="showCategory.php"</script>';
+		    	echo '<script>alert("恭喜您，修改商品信息成功！");window.location="showGoods.php"</script>';
 		    }else{
-		    	echo "<script>alert('不好意思，修改分类信息失败……');</script>";
+		    	echo '<script>alert("'.$res.'");window.location="editGoods.php?gid='.$gid.'"</script>';
 		    }
 	    	mysql_close($con);
 	    }
-	    
+		  
 	}
 ?>
 
@@ -110,15 +167,46 @@
 						<h2><i class="icon-edit"></i>商品分类</h2>
 					</div>
 					<div class="box-content">
-						<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"/>
+						<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data"/>
 						  <fieldset>
 							<div class="control-group">
-							  <label class="control-label" for="cname">分类名称：</label>
+							  <label class="control-label" for="cname">商品名称：</label>
 							  <div class="controls">
-							  	<input type="hidden" name="cid" value="<?php echo $cid;?>">
-								<input type="text" class="span3" id="cname" name="cname" value="<?php echo $cname;?>"/>
+								<input type="text" class="span3" id="gname" name="gname" value="<?php echo $gname;?>"/>
 							  </div>
-							</div>        
+							</div>
+							<div class="control-group">
+											<label class="control-label" for="cname">商品类别：</label>
+											<div class="controls">
+											  	<select id="cname" name="cid">
+											  	<option selected="selected" value="<?php echo $cid?>"><?php echo $cname?></option>
+											  	 <?php foreach ( $category as $cid=>$cname ) { 
+                        							echo '<option value="'.$cid.'">'.$cname.'</option>';
+                    								}
+                    							 ?>
+											  	</select>
+											</div>
+										</div>
+							<div class="control-group">
+							  <label class="control-label" for="price">商品单价：</label>
+							  <div class="controls">
+							  	<input type="hidden" name="gid" value="<?php echo $gid;?>"/>
+								<input type="text" class="span3" id="price" name="price" value="<?php echo $price;?>" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>&nbsp;元
+							  </div>
+							</div>     
+							<div class="control-group">
+								<label class="control-label">商品图片：</label>
+								<div class="controls">
+									<input type="hidden" name="picture" value="<?php echo $picture; ?>">
+								  <input type="file" name="image" size="25" maxlength="100" accept=".jpg,.gif,.jpeg,.png"/>
+								</div>
+							  </div>
+							  <div class="control-group">
+							  <label class="control-label" for="introduction">商品详情：</label>
+							  <div class="controls">
+								<input type="text" class="span3" id="introduction" name="introduction" value="<?php echo $introduction;?>"/>
+							  </div>
+							</div>
 
 							<div class="form-actions">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							  <button type="submit" class="btn btn-primary">提交</button>

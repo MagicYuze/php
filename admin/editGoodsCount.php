@@ -1,3 +1,45 @@
+<?php 
+	include "checkLogin.php";
+	$gname = "";
+	$gid = 0;
+	$gcount = 0;
+	if(isset($_GET['gid'])){
+		$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
+	    if (!$con){
+	        die('Could not connect: ' . mysql_error());
+	    }
+	    mysql_select_db("phpfinal",$con);//选择数据库
+	    $sql = 'select * from goods where gid ='.$_GET['gid'];
+	    $res = mysql_query($sql);
+	    $row = mysql_fetch_array($res);
+	    $gname = $row['gname'];
+	    $gid = $row['gid'];
+	    $gcount = $row['gcount'];
+	    mysql_close($con);
+	}
+	if(isset($_POST['gcount'])&&$_POST['gcount']!=0){
+		$gcount = $_POST['gcount'];
+		$gid = $_POST['gid'];
+		
+		$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
+	    if (!$con){
+	        die('Could not connect: ' . mysql_error());
+	    }
+	    mysql_select_db("phpfinal",$con);//选择数据库
+
+    	$sql = 'UPDATE goods SET gcount = "'.$gcount.'"WHERE gid = '.$gid;
+    	$res = mysql_query($sql);
+    	if(mysql_affected_rows()>0){
+	    	echo '<script>alert("恭喜您，修改库存信息成功！");window.location="showGoods.php"</script>';
+	    }else{
+	    	echo "<script>alert('不好意思，修改库存信息成功……');</script>";
+	    }
+    	mysql_close($con);
+	    
+	    
+	}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,25 +95,18 @@
 			<div class="row-fluid">
 				<div class="box span12">
 					<div class="box-header">
-						<h2><i class="icon-edit"></i>标题</h2>
+						<h2><i class="icon-edit"></i><?php echo $gname;?></h2>
 					</div>
 					<div class="box-content">
-						<form class="form-horizontal" />
+						<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"/>
 						  <fieldset>
 							<div class="control-group">
-							  <label class="control-label" for="typeahead">输入信息：</label>
+							  <label class="control-label" for="gcount">库存数量：</label>
 							  <div class="controls">
-								<input type="text" class="span3 typeahead" id="typeahead" />
+							  	<input type="hidden" name="gid" value="<?php echo $gid;?>">
+								<input onkeyup = "value=value.replace(/[^\d]/g,'')" type="text" class="span3"  id="gcount" name="gcount" value="<?php echo $gcount;?>"/>
 							  </div>
-							</div>
-							
-
-							<div class="control-group">
-							  <label class="control-label" for="fileInput">上传文件：</label>
-							  <div class="controls">
-								<input class="input-file uniform_on" id="fileInput" type="file" />
-							  </div>
-							</div>          
+							</div>        
 
 							<div class="form-actions">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							  <button type="submit" class="btn btn-primary">提交</button>

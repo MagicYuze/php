@@ -1,4 +1,5 @@
-<?php echo '
+<?php 
+	echo '
 		<!-- start: Header -->
 	<div class="navbar">
 		<div class="navbar-inner">
@@ -21,14 +22,14 @@
 								<div class="avatar"><img src="img/avatar.jpg" alt="Avatar" /></div>
 								<div class="user">
 									<span class="hello">欢迎管理员：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-									<span class="name">MagicYang</span>
+									<span class="name">'.$username.'</span>
 								</div>
 							</a>
 							<ul class="dropdown-menu">
 								<li class="dropdown-menu-title">
 									
 								</li>
-								<li><a href="login.php"><i class="icon-off"></i> 退出登录</a></li>
+								<li><a href="login.php?method=del"><i class="icon-off"></i> 退出登录</a></li>
 							</ul>
 						</li>
 						<!-- end: User Dropdown -->

@@ -1,3 +1,57 @@
+<?php 
+	include "checkLogin.php";
+	$cname = "";
+	$cid = 0;
+	if(isset($_GET['cid'])){
+		$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
+	    if (!$con){
+	        die('Could not connect: ' . mysql_error());
+	    }
+	    mysql_select_db("phpfinal",$con);//选择数据库
+	    $sql = 'select * from category where cid ='.$_GET['cid'];
+	    $res = mysql_query($sql);
+	    $row = mysql_fetch_array($res);
+	    $cname = $row['cname'];
+	    $cid = $row['cid'];
+	    mysql_close($con);
+	}
+	if(isset($_POST['cname'])){
+		$cname = $_POST['cname'];
+		$cid = $_POST['cid'];
+		
+		$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
+	    if (!$con){
+	        die('Could not connect: ' . mysql_error());
+	    }
+	    mysql_select_db("phpfinal",$con);//选择数据库
+
+
+	    if($cid == 0){
+	    	$res = mysql_query('select * from category order by cid DESC');
+       		$cid = mysql_fetch_assoc($res)['cid']+1;
+		    $sql = 'INSERT INTO  category (cid,cname,state) VALUES ('.$cid.',"'.$cname.'",1)';
+		    $res = mysql_query($sql);
+
+		    if(mysql_affected_rows()>0){
+		    	echo '<script>alert("恭喜您，添加分类成功！");window.location="showCategory.php"</script>';
+		    }else{
+		    	echo "<script>alert('$res');</script>";
+		    }
+		    mysql_close($con);
+	    }else{
+	    	$sql = 'UPDATE category SET cname = "'.$cname.'"WHERE cid = '.$cid;
+	    	$res = mysql_query($sql);
+	    	if(mysql_affected_rows()>0){
+		    	echo '<script>alert("恭喜您，修改分类信息成功！");window.location="showCategory.php"</script>';
+		    }else{
+		    	echo "<script>alert('不好意思，修改分类信息失败……');</script>";
+		    }
+	    	mysql_close($con);
+	    }
+	    
+	}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,113 +104,39 @@
 			<!-- start: Content -->
 			<div id="content" class="span10">
 			
-			
-			<div class="row-fluid">		
+			<div class="row-fluid">
 				<div class="box span12">
-					<div class="box-header" data-original-title="">
-						<h2><i class="icon-user"></i><span class="break"></span>Members</h2>
+					<div class="box-header">
+						<h2><i class="icon-edit"></i>商品分类</h2>
 					</div>
 					<div class="box-content">
-						<table class="table table-striped table-bordered bootstrap-datatable datatable">
-						  <thead>
-							  <tr>
-								  <th>Username</th>
-								  <th>Date registered</th>
-								  <th>Role</th>
-								  <th>Status</th>
-								  <th>Actions</th>
-							  </tr>
-						  </thead>   
-						  <tbody>
-							<tr>
-								<td>Anton Phunihel</td>
-								<td class="center">2012/01/01</td>
-								<td class="center">Member</td>
-								<td class="center">
-									<span class="label label-success">Active</span>
-								</td>
-								<td class="center">
-									<a class="btn btn-success" href="#">
-										<i class="icon-zoom-in "></i>  
-									</a>
-									<a class="btn btn-info" href="#">
-										<i class="icon-edit "></i>  
-									</a>
-									<a class="btn btn-danger" href="#">
-										<i class="icon-trash "></i> 
-									</a>
-								</td>
-							</tr>
-							
-							<tr>
-								<td>Bünyamin Kasper</td>
-								<td class="center">2012/08/23</td>
-								<td class="center">Staff</td>
-								<td class="center">
-									<span class="label label-important">Banned</span>
-								</td>
-								<td class="center">
-									<a class="btn btn-success" href="#">
-										<i class="icon-zoom-in "></i>                                            
-									</a>
-									<a class="btn btn-info" href="#">
-										<i class="icon-edit "></i>                                            
-									</a>
-									<a class="btn btn-danger" href="#">
-										<i class="icon-trash "></i> 
-										
-									</a>
-								</td>
-							</tr>
-							<tr>
-								<td>Bernhard Shelah</td>
-								<td class="center">2012/06/01</td>
-								<td class="center">Admin</td>
-								<td class="center">
-									<span class="label">Inactive</span>
-								</td>
-								<td class="center">
-									<a class="btn btn-success" href="#">
-										<i class="icon-zoom-in "></i>                                            
-									</a>
-									<a class="btn btn-info" href="#">
-										<i class="icon-edit "></i>                                            
-									</a>
-									<a class="btn btn-danger" href="#">
-										<i class="icon-trash "></i> 
-										
-									</a>
-								</td>
-							</tr>
-							<tr>
-								<td>Kostandin Warinhari</td>
-								<td class="center">2012/03/01</td>
-								<td class="center">Member</td>
-								<td class="center">
-									<span class="label label-warning">Pending</span>
-								</td>
-								<td class="center">
-									<a class="btn btn-success" href="#">
-										<i class="icon-zoom-in "></i>                                            
-									</a>
-									<a class="btn btn-info" href="#">
-										<i class="icon-edit "></i>                                            
-									</a>
-									<a class="btn btn-danger" href="#">
-										<i class="icon-trash "></i> 
+						<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"/>
+						  <fieldset>
+							<div class="control-group">
+							  <label class="control-label" for="cname">分类名称：</label>
+							  <div class="controls">
+							  	<input type="hidden" name="cid" value="<?php echo $cid;?>">
+								<input type="text" class="span3" id="cname" name="cname" value="<?php echo $cname;?>"/>
+							  </div>
+							</div>        
 
-									</a>
-								</td>
-							</tr>
-						  </tbody>
-					  </table>            
+							<div class="form-actions">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							  <button type="submit" class="btn btn-primary">提交</button>
+							  <button type="reset" class="btn">重置</button>
+							</div>
+						  </fieldset>
+						</form>   
+
 					</div>
 				</div><!--/span-->
-			
-			</div><!--/row-->
-
-			
-
+			</div><!--/row-->				
+			</div>
+			<!-- end: Content -->
+				
+		</div><!--/fluid-row-->
+		
+		<div class="clearfix"></div>
+		
 		<?php include "footer.php"?>
 				
 	</div><!--/.fluid-container-->

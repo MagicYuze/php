@@ -5,21 +5,31 @@
         die('Could not connect: ' . mysql_error());
     }
     mysql_select_db("phpfinal",$con);//选择数据库
+
     $sql = 'select * from category';
     $res = mysql_query($sql);
-    mysql_close($con);
+    $category = array();
+    if(mysql_num_rows($res)>0){
+       while ($row = mysql_fetch_assoc($res) )
+       		$category[$row['cid']] = $row['cname'];
+    }
+
+
+    $sql = 'select * from goods';
+    $res = mysql_query($sql);
+
     if(isset($_GET['method'])){
     	if($_GET['method']=="del"){
-    		$sql = "delete from category where cid=".$_GET['cid'];
+    		$sql = "delete from goods where gid=".$_GET['gid'];
     		mysql_query($sql);
-    		echo "<script>alert('恭喜您，删除分类成功！');window.location='showCategory.php'</script>";
+    		echo "<script>alert('恭喜您，删除商品成功！');window.location='showGoods.php'</script>";
     	}else if($_GET['method']=="changeState"){
     		if($_GET['state']==1)
-    			$sql = "UPDATE category SET state=0 where cid=".$_GET['cid'];
+    			$sql = "UPDATE goods SET state=0 where gid=".$_GET['gid'];
     		else if($_GET['state']==0)
-    			$sql = "UPDATE category SET state=1 where cid=".$_GET['cid'];
+    			$sql = "UPDATE goods SET state=1 where gid=".$_GET['gid'];
     		mysql_query($sql);
-    		echo "<script>alert('恭喜您，修改该分类状态成功！');window.location='showCategory.php'</script>";
+    		echo "<script>alert('恭喜您，修改该商品状态成功！');window.location='showGoods.php'</script>";
     	}
     }
 
@@ -81,15 +91,18 @@
 			<div class="row-fluid">		
 				<div class="box span12">
 					<div class="box-header" data-original-title="">
-						<h2><i class="icon-sitemap"></i><span class="break"></span>商品分类</h2>
+						<h2><i class="icon-sitemap"></i><span class="break"></span>商品详情</h2>
 					</div>
 					<div class="box-content">
 						<table class="table table-striped table-bordered bootstrap-datatable datatable">
 						  <thead>
 							  <tr>
-							  	  <th style="text-align:center;">分类ID</th>
-								  <th style="text-align:center;">分类名称</th>
-								  <th style="text-align:center;">状态</th>
+							  	  <th style="text-align:center;">商品图片</th>
+							 	  <th style="text-align:center;">商品名称</th>
+							  	  <th style="text-align:center;">商品类别</th>
+							  	  <th style="text-align:center;">商品单价</th>
+								  <th style="text-align:center;">商品库存</th>
+								  <th style="text-align:center;">商品状态</th>
 								  <th style="text-align:center;">操作</th>
 							  </tr>
 						  </thead>   
@@ -98,26 +111,32 @@
 						  while ($row = mysql_fetch_assoc($res) ){
 						  	if($row['state']==0){
 						  		$tip="label-important";
-						  		$state="已禁用";
+						  		$state="已停售";
 						  	}else{
 						  		$tip="label-success";
-						  		$state="正常使用";
+						  		$state="正常销售";
 						  	}
 						  	echo '
 							<tr>
-								<td style="text-align:center;" class="center">'.$row['cid'].'</td>
-								<td style="text-align:center;" class="center">'.$row['cname'].'</td>
-								<td style="text-align:center;" class="center">
+								<td style="text-align:center;" class="center"><img style="width:100px;height:120px;	" src="'.$row['picture'].'"/></td>
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$row['gname'].'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$category[$row['cid']].'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$row['price'].'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$row['gcount'].'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">
 									<span class="label '.$tip.'">'.$state.'</span>
 								</td>
-								<td style="text-align:center;" class="center">
-									<a class="btn btn-success" href="showCategory.php?method=changeState&state='.$row['state'].'&cid='.$row['cid'].'">
+								<td style="text-align:center;vertical-align:middle;" class="center">
+									<a class="btn btn-success" href="showGoods.php?method=changeState&state='.$row['state'].'&gid='.$row['gid'].'">
 										<i class="icon-off "></i> 
 									</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<a class="btn btn-info" href="editCategory.php?cid='.$row['cid'].'">
+									<a class="btn btn-warning" href="editGoodsCount.php?gid='.$row['gid'].'&gcount='.$row['gcount'].'">
+										<i class="icon-shopping-cart"></i>  
+									</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<a class="btn btn-info" href="editGoods.php?gid='.$row['gid'].'">
 										<i class="icon-edit "></i>  
 									</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<a class="btn btn-danger" href="showCategory.php?method=del&cid='.$row['cid'].'">
+									<a class="btn btn-danger" href="showGoods.php?method=del&gid='.$row['gid'].'">
 										<i class="icon-trash "></i> 
 									</a>
 								</td>
@@ -134,6 +153,7 @@
 			
 
 		<?php include "footer.php" ?>
+		<?php mysql_close();?>
 				
 	</div><!--/.fluid-container-->
 

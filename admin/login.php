@@ -1,10 +1,69 @@
+<?php
+$remember = "";
+$userName = '';
+$password = '';
+if(isset($_GET['method'])){
+	if($_GET['method']=="del"){
+		session_start();
+		unset($_SESSION['uid']);
+	}
+}
+//第一次登陆的时候，通过用户输入的信息来确认用户
+if(isset($_POST['usernamee'])&&isset($_POST['password'])){
+	if ( ( $_POST['usernamee'] != null ) && ( $_POST['password'] != null ) ) {
+		    $userName = $_POST['usernamee'];
+		    $password = $_POST['password'];
+		    $con = mysqli_connect('118.89.24.240','php','123456');
+
+		    mysqli_select_db($con,'phpfinal');
+
+		    $sql = 'select * from user where uname = "'.$userName.'"';
+		    $res = mysqli_query($con,$sql);
+		    $row = mysqli_fetch_assoc($res);
+		    if ($row['password'] == $password) {
+		    	if($row['state']==0){
+		    		echo '<script>alert("该账户已被停用！");window.location="login.php"</script>;';
+		    	}else if($row['level']==0){
+		    		echo '<script>alert("该账户无权限进入管理系统！");window.location="login.php"</script>;';
+		    	}
+		    	if(isset($_POST['remember'])){
+		    		if($_POST['remember']=="yes"){
+			    		//密码验证通过，设置cookies，把用户名和密码保存在客户端
+				        setcookie('username',$userName,time()+60*60*24*30);//设置时效一个月,一个月后这个cookie失效
+				        setcookie('password',$password,time()+60*60*24*30);
+		    		}
+		    	}else{
+				        setcookie('username');//设置时效一个月,一个月后这个cookie失效
+				        setcookie('password');
+		    	}
+		        
+		        session_start();
+		        $_SESSION['uid'] = $row['uid'];
+				//最后跳转到登录后的欢迎页面
+		        // header('Location: index.php');
+		        echo '<script>window.location="index.php"</script>;';
+		    }
+		    else
+		    	echo '<script>alert("用户名或密码错误");</script>;';
+		}
+	}
+if(isset($_COOKIE['username'])){
+	//再次访问的时候通过cookie来识别用户
+	if ( ($_COOKIE['username'] != null)  && ($_COOKIE['password'] != null) ) {
+	    $userName = $_COOKIE['username'];
+	    $password = $_COOKIE['password'];
+	    $remember = "checked";
+}
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	
 	<!-- start: Meta -->
 	<meta charset="utf-8" />
-	<title>SimpliQ - Flat & Responsive Bootstrap Admin Template</title>
+	<title>基于PHP的购物商城</title>
 	<meta name="description" content="SimpliQ - Flat & Responsive Bootstrap Admin Template." />
 	<meta name="author" content="Łukasz Holeczek" />
 	<meta name="keyword" content="SimpliQ, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina" />
@@ -50,28 +109,23 @@
 			<div class="row-fluid">
 				<div class="login-box">
 					<h2>登录您的账户</h2>
-					<form class="form-horizontal" action="index.php" method="post" />
+					<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" />
 						<fieldset>
 							
-							<input class="input-large span12" name="username" id="username" type="text" placeholder="type username" />
+							<input class="input-large span12" name="usernamee" id="usernamee" type="text" placeholder="输入用户名" value="<?php echo $userName ?>"/>
 
-							<input class="input-large span12" name="password" id="password" type="password" placeholder="type password" />
+							<input class="input-large span12" name="password" id="password" type="password" placeholder="输入密码" value="<?php echo $password ?>"/>
 
 							<div class="clearfix"></div>
 							
-							<label class="remember" for="remember"><input type="checkbox" id="remember" />记住密码</label>
+							<label class="remember" for="remember"><input name="remember" value="yes" type="checkbox" id="remember" checked="<?php echo $remember ?>" />记住密码</label>
 							
 							<div class="clearfix"></div>
 							
-							<button type="submit" class="btn btn-primary span12">Login</button>
+							<button type="submit" class="btn btn-primary span12">登录</button>
 						</fieldset>	
 
-					</form>
-					<hr />
-					<h3>忘记密码?</h3>
-					<p>
-						没关系, <a href="#">点击这里</a>找回密码。
-					</p>	
+					</form>	
 				</div>
 			</div><!--/row-->
 			

@@ -1,28 +1,36 @@
 <?php 
 	include "checkLogin.php";
+	date_default_timezone_set("PRC");
     $con = mysql_connect("118.89.24.240","php","123456");//连接数据库
     if (!$con){
         die('Could not connect: ' . mysql_error());
     }
     mysql_select_db("phpfinal",$con);//选择数据库
-    $sql = 'select * from category';
-    $res = mysql_query($sql);
-    mysql_close($con);
-    if(isset($_GET['method'])){
-    	if($_GET['method']=="del"){
-    		$sql = "delete from category where cid=".$_GET['cid'];
-    		mysql_query($sql);
-    		echo "<script>alert('恭喜您，删除分类成功！');window.location='showCategory.php'</script>";
-    	}else if($_GET['method']=="changeState"){
-    		if($_GET['state']==1)
-    			$sql = "UPDATE category SET state=0 where cid=".$_GET['cid'];
-    		else if($_GET['state']==0)
-    			$sql = "UPDATE category SET state=1 where cid=".$_GET['cid'];
-    		mysql_query($sql);
-    		echo "<script>alert('恭喜您，修改该分类状态成功！');window.location='showCategory.php'</script>";
-    	}
-    }
 
+  
+
+
+    if(isset($_GET['method'])){
+    	if($_GET['method']=="check"){
+    		if($_GET['state']==3){
+    		  $sql = 'select * from orders';
+    		  $res = mysql_query($sql,$con);
+    		}else{
+    		  $sql = 'select * from orders where state='.$_GET['state'];
+    		  $res = mysql_query($sql,$con);
+    		}
+    	}
+    	else if($_GET['method']=="del"){
+    		$sql = 'delete from orders where oid="'.$_GET['oid'].'"';
+    		mysql_query($sql);
+    		echo '<script>alert("恭喜您，删除订单成功！");window.location="showOrder.php?method=check&state='.$_GET['state'].'"</script>';
+    	}else if($_GET['method']=="changeState"){
+    		$sql = 'UPDATE orders SET state=1 where oid="'.$_GET['oid'].'";';
+    		echo $sql;
+    		mysql_query($sql);
+    		echo "<script>alert('恭喜您，发货成功！');window.location='showOrder.php?method=check&state=1'</script>";
+    	}
+    }	
  ?>
 
 <!DOCTYPE html>
@@ -81,43 +89,92 @@
 			<div class="row-fluid">		
 				<div class="box span12">
 					<div class="box-header" data-original-title="">
-						<h2><i class="icon-sitemap"></i><span class="break"></span>商品分类</h2>
+						<h2><i class="icon-sitemap"></i><span class="break"></span>商品详情</h2>
 					</div>
 					<div class="box-content">
 						<table class="table table-striped table-bordered bootstrap-datatable datatable">
 						  <thead>
 							  <tr>
-							  	  <th style="text-align:center;">分类ID</th>
-								  <th style="text-align:center;">分类名称</th>
-								  <th style="text-align:center;">状态</th>
+							  	  <th style="text-align:center;">订单号</th>
+							 	  <th style="text-align:center;">订单时间</th>
+							  	  <th style="text-align:center;">用户名</th>
+							  	  <th style="text-align:center;">商品*数量</th>
+								  <th style="text-align:center;">订单金额</th>
+								  <th style="text-align:center;">订单状态</th>
 								  <th style="text-align:center;">操作</th>
 							  </tr>
 						  </thead>   
 						  <tbody>
 						  <?php
-						  while ($row = mysql_fetch_assoc($res) ){
+						  while ($row = mysql_fetch_assoc($res)){
 						  	if($row['state']==0){
 						  		$tip="label-important";
-						  		$state="已禁用";
+						  		$state="待发货";
+						  	}else if($row['state']==1){
+						  		$tip="label-warning";
+						  		$state="待收货";
 						  	}else{
 						  		$tip="label-success";
-						  		$state="正常使用";
+						  		$state="已完成";
 						  	}
+
+							$goodslist = $row['goodslist'];
+						    $json_data = json_decode($goodslist);
+							$item_num = count($json_data);
+						    $order = array();
+
+						    foreach((array)$json_data as $item){
+						    	$sqls = 'select * from goods where gid = '.$item->gid;
+						    	$ress = mysql_query($sqls);
+						    	$rows = mysql_fetch_assoc($ress);
+							    $goods = array(	
+							        'gname' => $rows['gname'],
+							        'gnum' => $item->gnum
+						    	);
+							    //往二维数组追加元素
+							    array_push($order,$goods);
+							}
+						  		$uid = $row['uid'];
+								$sqls = 'select * from user where uid = '.$uid;
+							    		$ress = mysql_query($sqls);
+							    		$rows = mysql_fetch_assoc($ress);
+							    $uname = $rows['uname'];
+
+							    $oid = $row['oid'];
+								$odate = $row['odate'];
+								$count = $row['count'];
+
+
 						  	echo '
 							<tr>
-								<td style="text-align:center;" class="center">'.$row['cid'].'</td>
-								<td style="text-align:center;" class="center">'.$row['cname'].'</td>
-								<td style="text-align:center;" class="center">
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$oid.'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$odate.'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$uname.'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">';
+   								
+   							foreach($order as $k=>$goods){  
+   								if($goods["gname"])
+						       		echo $goods["gname"]."*".$goods['gnum']."<br>"; 
+						    }
+
+
+							echo '
+								</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$count.'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">
 									<span class="label '.$tip.'">'.$state.'</span>
 								</td>
-								<td style="text-align:center;" class="center">
-									<a class="btn btn-success" href="showCategory.php?method=changeState&state='.$row['state'].'&cid='.$row['cid'].'">
-										<i class="icon-off "></i> 
+								<td style="text-align:center;vertical-align:middle;" class="center"> 
+							';
+
+									if($row['state']==0)
+										echo '
+									<a class="btn btn-info" href="showOrder.php?oid='.$row['oid'].'&method=changeState">
+										<i class="icon-truck "></i> 
+										';
+							echo ' 
 									</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<a class="btn btn-info" href="editCategory.php?cid='.$row['cid'].'">
-										<i class="icon-edit "></i>  
-									</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<a class="btn btn-danger" href="showCategory.php?method=del&cid='.$row['cid'].'">
+									<a class="btn btn-danger" href="showOrder.php?method=del&oid='.$row['oid'].'&state='.$row['state'].'">
 										<i class="icon-trash "></i> 
 									</a>
 								</td>
@@ -125,7 +182,7 @@
 							';
 						}?>
 						  </tbody>
-					  </table>            
+					  </table>             
 					</div>
 				</div><!--/span-->
 			
@@ -134,6 +191,7 @@
 			
 
 		<?php include "footer.php" ?>
+		<?php mysql_close();?>
 				
 	</div><!--/.fluid-container-->
 

@@ -1,7 +1,13 @@
 <!-- header -->
+<?php 
+	include_once ('functions/database.php'); 
+	get_connection();
+	session_start();
+?>
+
 	<div class="agileits_header">
 		<div class="w3l_offers">
-			<a href="products.php">今日特卖</a>
+			<a href="index.php">今日特卖</a>
 		</div>
 		<div class="w3l_search">
 			<!-- <form action="#" method="post">
@@ -29,9 +35,20 @@
 					<div class="mega-dropdown-menu">
 						<div class="w3ls_vegetables">
 							<ul class="dropdown-menu drp-mnu">
-								<li><a href="login.php">Login</a></li> 
-								<li><a href="login.php">Sign Up</a></li>
-								<li><a href="#">Log off</a></li>
+								<?php
+									if(isset($_SESSION["user"])){
+										 echo "<li><a href=\"login.php\" id=\"logoff\">Log off</a></li>";	
+									}
+									else{
+										echo "<li><a href=\"login.php\">Login</a></li>"; 
+										echo "<li><a href=\"login.php\">Sign Up</a></li>";
+									}
+								?>
+								<script>
+									$("#logoff").click(function{
+										<?php unset($_SESSION['user']); ?>
+									});
+								</script>
 							</ul>
 						</div>                  
 					</div>	
@@ -118,7 +135,16 @@
 			   <!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 					<ul class="nav navbar-nav nav_1">
-						<li><a href="products.html">Branded Foods</a></li>
+						<?php
+							$searchSQL="select * from category";
+							$resultSet=mysql_query($searchSQL);
+							while($db=mysql_fetch_array($resultSet)){
+								if($db['state']==1){
+									echo "<li><a href=\"products.php?cid=".$db['cid']."\">".$db['cname']."</a></li>";
+								}
+							}
+						?>
+						<!--<li><a href="products.html">Branded Foods</a></li>
 						<li><a href="household.html">Households</a></li>
 						<li class="dropdown mega-dropdown active">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Veggies & Fruits<span class="caret"></span></a>				
@@ -156,7 +182,7 @@
 								</div>                  
 							</div>	
 						</li>
-						<li><a href="bread.html">Bread & Bakery</a></li>
+						<li><a href="bread.html">Bread & Bakery</a></li>-->
 					</ul>
 				 </div><!-- /.navbar-collapse -->
 			</nav>

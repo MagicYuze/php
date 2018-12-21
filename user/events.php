@@ -36,40 +36,24 @@
 <body>
 <!-- header -->
 <?php include "head.php"?>
-<div style="float:left; margin-top:50px; margin-left:100px">
-	<div>
-		<h3 class="modal-title" id="myModalLabel">
-		<span class="glyphicon glyphicon-shopping-cart"></span>订单详情
-		</h3>
-	</div>
-	<table>
-		<tbody>
-			<tr>
-				<td class="text-center" style="width: 50px">
-					<img width="50px" height="50px" src="images/2.png"></td>
-				<td title="name" width="200px">百事可乐</td>
-				<td title="num" width="200px">4</td>
-				<td title="price" width="200px">¥5.00</td>
-			</tr>
-			<tr>
-				<td class="text-center" style="width: 50px">
-					<img width="50px" height="50px" src="images/2.png"></td>
-				<td title="name">百事可乐</td>
-				<td title="num">4</td>
-				<td title="price">¥5.00</td>
-			</tr>
-			<tr>
-				<td class="text-center" style="width: 50px"></td>
-				<td title="name">总价</td>
-				<td title="price"></td>
-				<td title="total">¥40.00</td>
-			</tr>
-		</tbody>
-	</table>
-	
-	<div class="modal-footer">
-		<button type="button" class="btn btn-default">确认收货</button>&nbsp;
-		<button type="button" class="btn btn-default"><a href="events.php">返回</a></button>
+<div class="w3l_banner_nav_right">
+	<div class="events">
+			<h3>订单</h3>
+
+			<div class="w3agile_event_grids">
+				<div class="col-md-6 w3agile_event_grid">
+					<div class="col-md-3 w3agile_event_grid_left">
+						<i class="fa">待收货</i>
+					</div>
+					<div class="col-md-9 w3agile_event_grid_right">
+					<p><a href="orderform.php"><h4>订单号：1234567894512156484121</h4></a></p>
+						<p><h4>订单时间：2018/12/21</h4></p>
+						<h4>订单总金额：¥189</h4>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+			<div class="clearfix"> </div>
 	</div>
 </div>
 

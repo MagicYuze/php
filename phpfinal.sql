@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2018-12-19 13:44:13
+-- Generation Time: 2018-12-21 14:35:16
 -- 服务器版本： 5.5.57-log
 -- PHP Version: 5.5.38
 
@@ -94,17 +94,17 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `uid` int(11) NOT NULL COMMENT '用户id',
   `goodslist` varchar(100) NOT NULL COMMENT '商品列表｛gid：商品id，gnum：购买商品数量｝',
   `state` tinyint(1) NOT NULL COMMENT '订单状态',
-  `count` double NOT NULL COMMENT '订单总金额'
+  `money` double NOT NULL COMMENT '订单总金额'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 --
 -- 转存表中的数据 `orders`
 --
 
-INSERT INTO `orders` (`oid`, `odate`, `uid`, `goodslist`, `state`, `count`) VALUES
-('E45G689KJ654FGHY7NB', '2018-12-19 09:00:26', 2, '[{"gid":2,"gnum":3},{"gid":1,"gnum":3}]', 0, 1000),
-('R7JO689KJ654FGHY7NB', '2018-12-19 09:57:26', 2, '[{"gid":1,"gnum":4},{"gid":2,"gnum":3}]', 1, 1000),
-('BHU6G89KJ654FGHY7NB', '2018-12-19 09:57:26', 2, '[{"gid":2,"gnum":4},{"gid":1,"gnum":3}]', 2, 10000);
+INSERT INTO `orders` (`oid`, `odate`, `uid`, `goodslist`, `state`, `money`) VALUES
+('E45G689KJ654FGHY7NB', '2018-12-14 09:00:26', 2, '[{"gid":2,"gnum":3},{"gid":1,"gnum":3}]', 0, 1534),
+('R7JO689KJ654FGHY7NB', '2018-12-19 09:57:26', 2, '[{"gid":1,"gnum":4},{"gid":2,"gnum":3}]', 1, 655.5),
+('BHU6G89KJ654FGHY7NB', '2018-12-19 09:57:26', 2, '[{"gid":2,"gnum":4},{"gid":1,"gnum":3}]', 2, 22.8);
 
 -- --------------------------------------------------------
 
@@ -129,8 +129,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`uid`, `uname`, `password`, `openid`, `phone`, `email`, `state`, `level`) VALUES
 (1, 'admin', 'admin', '', '', '', 1, 1),
-(2, 'MagicYang', '123123', '', '13433633248', 'yangyuze1997@qq.com', 1, 1),
-(3, 'LinLiqiang', '123123', '', '', '', 1, 0),
+(2, 'MagicYang', '123123', '', '13433633248', 'yangyuze1997@qq.com', 1, 0),
+(3, 'LinLiqiang', '123123', '', '', '1833608080@qq.com', 1, 0),
 (4, 'ZhangJinjian', '123123', '', '', '', 1, 0);
 
 --

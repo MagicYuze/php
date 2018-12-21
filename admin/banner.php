@@ -7,6 +7,13 @@
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li><a href="index.php"><i class="icon-bar-chart"></i><span class="hidden-tablet">首页</span></a></li>	
 						<li>
+							<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i>用户管理<span class="hidden-tablet"></span> <span class="label">2</span></a>
+							<ul>
+								<li><a class="submenu" href="showUser.php"><i class="icon-eye-open"></i>查看用户<span class="hidden-tablet"></span></a></li>
+								<li><a class="submenu" href="editUser.php"><i class="icon-signin"></i><span class="hidden-tablet">添加用户</span></a></li>
+							</ul>	
+						</li>
+						<li>
 							<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i>分类管理<span class="hidden-tablet"></span> <span class="label">2</span></a>
 							<ul>
 								<li><a class="submenu" href="showCategory.php"><i class="icon-eye-open"></i>查看分类<span class="hidden-tablet"></span></a></li>

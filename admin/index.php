@@ -1,5 +1,110 @@
 <?php 
 	include "checkLogin.php";
+	$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
+    if (!$con){
+        die('Could not connect: ' . mysql_error());
+    }
+    mysql_select_db("phpfinal",$con);//选择数据库
+    //统计用户数
+    $sql_countUser = 'select count("") as num from user';
+    $res = mysql_query($sql_countUser);
+    $row = mysql_fetch_array($res);
+    $countUser = $row['num'];
+    //统计商品分类数
+    $sql_countCategory = 'select count("") as num from category';
+    $res = mysql_query($sql_countCategory);
+    $row = mysql_fetch_array($res);
+    $countCategory = $row['num'];
+    //统计商品数
+    $sql_countGoods = 'select count("") as num from goods';
+    $res = mysql_query($sql_countGoods);
+    $row = mysql_fetch_array($res);
+    $countGoods = $row['num'];
+    //统计订单数
+    $sql_countOrder = 'select count("") as num from orders';
+    $res = mysql_query($sql_countOrder);
+    $row = mysql_fetch_array($res);
+    $countOrder = $row['num'];
+
+    //近7天的订单情况
+    //前6天订单数量 
+    $sql_num_6days_ago = 'SELECT count("") as num FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 6';
+    $res = mysql_query($sql_num_6days_ago);
+    $row = mysql_fetch_array($res);
+    $num_6days_ago = $row['num'];
+    //前6天订单销量
+    $sql_money_6days_ago = 'SELECT SUM(money) as total FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 6';
+    $res = mysql_query($sql_money_6days_ago);
+    $row = mysql_fetch_array($res);
+    $money_6days_ago = $row['total']/1000;
+
+    //前5天订单数量 
+    $sql_num_5days_ago = 'SELECT count("") as num FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 5';
+    $res = mysql_query($sql_num_5days_ago);
+    $row = mysql_fetch_array($res);
+    $num_5days_ago = $row['num'];
+    //前5天订单销量
+    $sql_money_5days_ago = 'SELECT SUM(money) as total FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 5';
+    $res = mysql_query($sql_money_5days_ago);
+    $row = mysql_fetch_array($res);
+    $money_5days_ago = $row['total']/1000;
+
+    //前4天订单数量 
+    $sql_num_4days_ago = 'SELECT count("") as num FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 4';
+    $res = mysql_query($sql_num_4days_ago);
+    $row = mysql_fetch_array($res);
+    $num_4days_ago = $row['num'];
+    //前4天订单销量
+    $sql_money_4days_ago = 'SELECT SUM(money) as total FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 4';
+    $res = mysql_query($sql_money_4days_ago);
+    $row = mysql_fetch_array($res);
+    $money_4days_ago = $row['total']/1000;
+
+    //前3天订单数量 
+    $sql_num_3days_ago = 'SELECT count("") as num FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 3';
+    $res = mysql_query($sql_num_3days_ago);
+    $row = mysql_fetch_array($res);
+    $num_3days_ago = $row['num'];
+    //前3天订单销量
+    $sql_money_3days_ago = 'SELECT SUM(money) as total FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 3';
+    $res = mysql_query($sql_money_3days_ago);
+    $row = mysql_fetch_array($res);
+    $money_3days_ago = $row['total']/1000;
+
+    //前2天订单数量 
+    $sql_num_2days_ago = 'SELECT count("") as num FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 2';
+    $res = mysql_query($sql_num_2days_ago);
+    $row = mysql_fetch_array($res);
+    $num_2days_ago = $row['num'];
+    //前2天订单销量
+    $sql_money_2days_ago = 'SELECT SUM(money) as total FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 2';
+    $res = mysql_query($sql_money_2days_ago);
+    $row = mysql_fetch_array($res);
+    $money_2days_ago = $row['total']/1000;
+
+    //前1天订单数量 
+    $sql_num_1day_ago = 'SELECT count("") as num FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 1';
+    $res = mysql_query($sql_num_1day_ago);
+    $row = mysql_fetch_array($res);
+    $num_1day_ago = $row['num'];
+    //前1天订单销量
+    $sql_money_1day_ago = 'SELECT SUM(money) as total FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 1';
+    $res = mysql_query($sql_money_1day_ago);
+    $row = mysql_fetch_array($res);
+    $money_1day_ago = $row['total']/1000;
+
+    //当天订单数量 
+    $sql_num_today = 'SELECT count("") as num FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 0';
+    $res = mysql_query($sql_num_today);
+    $row = mysql_fetch_array($res);
+    $num_today = $row['num'];
+    //当天订单销量
+    $sql_money_today = 'SELECT SUM(money) as total FROM orders WHERE TO_DAYS( NOW( ) ) - TO_DAYS(odate) = 0';
+    $res = mysql_query($sql_money_today);
+    $row = mysql_fetch_array($res);
+    $money_today = $row['total']/1000;
+
+    mysql_close();
  ?>
 
 <!DOCTYPE html>
@@ -62,28 +167,32 @@
 					<div class="boxchart-overlay blue">
 						<div class="boxchart">5,6,7,2,0,4,2,4,8,2,3,3,2</div>
 					</div>	
-					<span class="title">Clients</span>
-					<span class="value">4 589</span>
+					<span class="title">用户总数</span>
+					<span class="value"><?php echo $countUser?></span>
+				</div>
+				
+				<div class="span3 smallstat box mobileHalf" ontablet="span6" ondesktop="span3">
+					<div class="boxchart-overlay green">
+						<div class="boxchart">1,2,6,4,0,8,2,4,5,3,1,7,5</div>
+					</div>	
+					<span class="title">商品分类总数</span>
+					<span class="value"><?php echo $countCategory?></span>
+				</div>
+				
+				<div class="span3 smallstat box mobileHalf" ontablet="span6" ondesktop="span3">
+					<div class="boxchart-overlay yellow">
+						<div class="boxchart">1,2,6,4,0,8,2,4,5,3,1,7,5</div>
+					</div>	
+					<span class="title">商品总数</span>
+					<span class="value"><?php echo $countGoods?></span>
 				</div>
 				
 				<div class="span3 smallstat box mobileHalf" ontablet="span6" ondesktop="span3">
 					<div class="boxchart-overlay red">
 						<div class="boxchart">1,2,6,4,0,8,2,4,5,3,1,7,5</div>
 					</div>	
-					<span class="title">Transactions</span>
-					<span class="value">789</span>
-				</div>
-				
-				<div class="span3 smallstat box mobileHalf noMargin" ontablet="span6" ondesktop="span3">
-					<i class="icon-download-alt green"></i>
-					<span class="title">Income</span>
-					<span class="value">$1 999,99</span>
-				</div>
-				
-				<div class="span3 smallstat mobileHalf box" ontablet="span6" ondesktop="span3">
-					<i class="icon-money yellow"></i>
-					<span class="title">Account</span>
-					<span class="value">$19 999,99</span>
+					<span class="title">订单总数</span>
+					<span class="value"><?php echo $countOrder?></span>
 				</div>
 			
 			</div>	
@@ -93,23 +202,23 @@
 				
 				<div class="box span12">
 					<div class="box-header">
-						<h2>实时 销量/订单信息</h2>
+						<h2>近7天&nbsp;&nbsp;&nbsp;&nbsp;订单(笔)/销量(千元)信息</h2>
 					</div>
 					<div class="box-content" style="height:308px;">
-						<input type="hidden" id="MonB" value="3">
-						<input type="hidden" id="MonR" value="51">
-						<input type="hidden" id="TueB" value="8">
-						<input type="hidden" id="TueR" value="42">
-						<input type="hidden" id="WedB" value="53">
-						<input type="hidden" id="WedR" value="55">
-						<input type="hidden" id="TurB" value="19">
-						<input type="hidden" id="TurR" value="43">
-						<input type="hidden" id="FriB" value="16">
-						<input type="hidden" id="FriR" value="54">
-						<input type="hidden" id="SatB" value="66">
-						<input type="hidden" id="SatR" value="27">
-						<input type="hidden" id="SunB" value="98">
-						<input type="hidden" id="SunR" value="84">
+						<input type="hidden" id="MonB" value="<?php echo $num_6days_ago?>">
+						<input type="hidden" id="MonR" value="<?php echo $money_6days_ago?>">
+						<input type="hidden" id="TueB" value="<?php echo $num_5days_ago?>">
+						<input type="hidden" id="TueR" value="<?php echo $money_5days_ago?>">
+						<input type="hidden" id="WedB" value="<?php echo $num_4days_ago?>">
+						<input type="hidden" id="WedR" value="<?php echo $money_4days_ago?>">
+						<input type="hidden" id="TurB" value="<?php echo $num_3days_ago?>">
+						<input type="hidden" id="TurR" value="<?php echo $money_3days_ago?>">
+						<input type="hidden" id="FriB" value="<?php echo $num_2days_ago?>">
+						<input type="hidden" id="FriR" value="<?php echo $money_2days_ago?>">
+						<input type="hidden" id="SatB" value="<?php echo $num_1day_ago?>">
+						<input type="hidden" id="SatR" value="<?php echo $money_1day_ago?>">
+						<input type="hidden" id="SunB" value="<?php echo $num_today?>">
+						<input type="hidden" id="SunR" value="<?php echo $money_today?>">
 						<div id="stats-chart2" class="span11" style="height:308px"></div>
 					</div>	
 				</div>	

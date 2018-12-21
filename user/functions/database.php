@@ -7,7 +7,7 @@ function get_connection(){
      $password = "123456"; 				//数据库服务器密码 
      global $database_connection; 
      $database_connection = @mysql_connect($hostname, $username, $password) or die(mysql_error()); 					//连接数据库服务器 
-     mysql_query("set names 'gbk'");//设置字符集 
+     mysql_query("set names 'utf-8'");//设置字符集 
      @mysql_select_db($database, $database_connection) or die(mysql_error()); 
 } 
 function close_connection(){ 

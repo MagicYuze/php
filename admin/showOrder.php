@@ -142,7 +142,7 @@
 
 							    $oid = $row['oid'];
 								$odate = $row['odate'];
-								$count = $row['count'];
+								$money = $row['money'];
 
 
 						  	echo '
@@ -160,7 +160,7 @@
 
 							echo '
 								</td>
-								<td style="text-align:center;vertical-align:middle;" class="center">'.$count.'</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">'.$money.'</td>
 								<td style="text-align:center;vertical-align:middle;" class="center">
 									<span class="label '.$tip.'">'.$state.'</span>
 								</td>

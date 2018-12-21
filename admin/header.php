@@ -19,7 +19,7 @@
 						<!-- start: User Dropdown -->
 						<li class="dropdown">
 							<a class="btn account dropdown-toggle" data-toggle="dropdown" href="#">
-								<div class="avatar"><img src="img/avatar.jpg" alt="Avatar" /></div>
+								<div class="avatar"><img src="/php/admin/img/avatar.jpg" alt="Avatar" /></div>
 								<div class="user">
 									<span class="hello">欢迎管理员：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 									<span class="name">'.$username.'</span>

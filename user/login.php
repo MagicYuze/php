@@ -35,6 +35,15 @@
 	
 <body>
 <?php include "head.php" ?>
+<?php    //js中无法写php
+	if(is_array($_GET)&&count($_GET)>0){ //先判断是否通过get传值了
+		$type=$_GET['type'];
+		if($type=="log"){  //注销
+			unset($_SESSION["user"]);
+			echo "<script>window.location.href='login.php'</script>";
+		}
+	}
+?>
 		<div class="w3l_banner_nav_right">
 <!-- login -->
 		<div class="w3_login" id="lr">

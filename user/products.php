@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Beverages</title>
+<title>products</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -36,15 +36,78 @@
 <body>
 <!-- header -->
 	<?php include "head.php" ?>
+	<?php include "functions/page.php" ?>
 		<div class="w3l_banner_nav_right">
 			<div class="w3l_banner_nav_right_banner7">
 				<h3>Best Deals For New Products<span class="blink_me"></span></h3>
 			</div>
-			<div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub">
-				<h3>Beverages</h3>   <!--商品类别名称-->
+			<?php
+				$cid=$_GET['cid'];
+				$selectCid="select * from category where cid='".$cid."'";
+				$resultSet=mysql_query($selectCid);
+				$cname="";
+				while($db=mysql_fetch_array($resultSet)){  //只是取个种类名字
+					$cname=$db["cname"];
+				}
+			?>
+			 <div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub" style="position: relative;">
+				<h3><?php echo $cname ?></h3>   <!--商品类别名称-->
 				<div class="w3ls_w3l_banner_nav_right_grid1">
 					<br/>
-					<div class="col-md-3 w3ls_w3l_banner_left">
+				<?php
+					$page_size=$_GET["page_size"];  //几个为一页
+					$page_current=$_GET["page_current"];  //当前页数
+
+					$selectGood="select * from goods where cid='".$cid."'";   //总数据
+					$resultSet=mysql_query($selectGood);
+
+					$total_records=mysql_num_rows($resultSet);  //总记录条数
+					
+					$start_records=($page_current-1)*$page_size;  //limit开始的条数
+					$end_records=$page_size;  //limit的条数
+
+					$selectGood="select * from goods where cid='".$cid."' limit ".$start_records.",".$end_records;
+
+					$resultSet=mysql_query($selectGood);  //根据数据库取对应条数的
+
+					while($db=mysql_fetch_array($resultSet)){  	//一个个展示(暂未分页)
+						if($db["state"]==1 && $db["gcount"]>0){   //判断状态是否可以出售
+							echo "<div class=\"col-md-3 w3ls_w3l_banner_left\">
+						<div class=\"hover14 column\">
+						<div class=\"agile_top_brand_left_grid w3l_agile_top_brand_left_grid\">
+							<div class=\"agile_top_brand_left_grid_po\s\">
+								<img src=\"images/offer.png\" alt=\" \" class=\"img-responsive\" />
+							</div>
+							<div class=\"agile_top_brand_left_grid1\">
+								<figure>
+									<div class=\"snipcart-item block\">
+										<div class=\"snipcart-thumb\">"
+										."<a href='/php/user/single.php?gid=".$db["gid"]."'><img src='".$db["picture"]."' style='height:140px;width:140px;' alt=' ' class='img-responsive'></a>"
+										."<p>".$db["gname"]."</p>"
+										."<h4>$".$db["price"]."</h4></div>"
+
+										."<div class=\"snipcart-details\">
+											<button class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."'data-summary='summary ".$db["gid"]."' data-price='".$db["price"]."' data-quantity='1' data-image='".$db["picture"]."'>加入购物车</button>
+										</div>
+									</div>
+								</figure>
+							</div>
+						</div>
+						</div>
+					</div>";
+				    }
+				}
+				  $url="/php/user/products.php?&page_size=".$page_size."&cid=".$cid;
+
+				  echo "<div style='margin-top:400px; margin-left:780px;'>";
+				  page($total_records,$page_size,$page_current,$url,null);
+				  echo "</div>";
+				?>				
+				</div>
+			</div>
+		</div>
+
+					<!--<div class="col-md-3 w3ls_w3l_banner_left">
 						<div class="hover14 column">
 						<div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
 							<div class="agile_top_brand_left_grid_pos">
@@ -325,7 +388,7 @@
 					<div class="clearfix"> </div>
 				</div>
 			</div>
-		</div>
+		</div>-->
 		<div class="clearfix"></div>
 	</div>
 
@@ -347,7 +410,6 @@ $(document).ready(function(){
     );
 });
 </script>
-<script type="text/javascript" id="snipcart" src="js/snipcart.js" data-api-key="ZGQxNzVjZTItOWRmNS00YjJhLTlmNGUtMDE4NjdiY2RmZGNj"></script>
 <!-- here stars scrolling icon -->
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -363,6 +425,7 @@ $(document).ready(function(){
 			$().UItoTop({ easingType: 'easeOutQuart' });
 								
 			});
+
 	</script>
 <!-- //here ends scrolling icon -->
 </body>

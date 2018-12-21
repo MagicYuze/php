@@ -37,18 +37,13 @@
 							<ul class="dropdown-menu drp-mnu">
 								<?php
 									if(isset($_SESSION["user"])){
-										 echo "<li><a href=\"login.php\" id=\"logoff\">注销</a></li>";	
+										 echo "<li><a href=\"login.php?type=log\" id=\"logoff\">注销</a></li>";	
 									}
 									else{
 										echo "<li><a href=\"login.php\">登录</a></li>"; 
 										echo "<li><a href=\"login.php\">注册</a></li>";
 									}
 								?>
-								<script>
-									$("#logoff").click(function{
-										<?php unset($_SESSION['user']); ?>
-									});
-								</script>
 							</ul>
 						</div>                  
 					</div>	
@@ -139,7 +134,7 @@
 							$resultSet=mysql_query($searchSQL);
 							while($db=mysql_fetch_array($resultSet)){
 								if($db['state']==1){
-									echo "<li><a href=\"products.php?cid=".$db['cid']."\">".$db['cname']."</a></li>";
+									echo "<li><a href=\"products.php?page_current=1&page_size=4&cid=".$db['cid']."\">".$db['cname']."</a></li>";
 								}
 							}
 						?>
@@ -191,5 +186,8 @@
 <style>
 	.snipcart-thumb h4{
 		margin-inline-start: 45%;
+	}
+	.snipcart-thumb p{
+		margin-inline-start: 21%;
 	}
 </style>

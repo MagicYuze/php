@@ -41,7 +41,13 @@
 		});
 	});
 </script>
+<style>
+ 	.wthree_footer_copy {
+ 		  margin: 20em 0 0;
+ 	}
+</style>
 <!-- start-smoth-scrolling -->
+
 </head>
 	
 <body>
@@ -51,37 +57,44 @@
 			<div class="w3l_banner_nav_right_banner3">
 				<h3>Best Deals For New Products<span class="blink_me"></span></h3>
 			</div>
-			<div class="agileinfo_single">
-				<h5>charminar pulao basmati rice 5 kg</h5>
-				<div class="col-md-4 agileinfo_single_left">
-					<img id="example" src="images/76.png" alt=" " class="img-responsive" />
+				<?php
+					$gid=$_GET['gid'];
+					$selectSQL="select * from goods where gid='".$gid."'";
+					$resultSet=mysql_query($selectSQL);
+					while($db=mysql_fetch_array($resultSet)){
+						echo "<div class=\"agileinfo_single\">
+				<h5>".$db["gname"]."</h5>
+				<div class=\"col-md-4 agileinfo_single_left\">
+					<img id=\"example\" src='".$db["picture"]."' style='width:212px; height:212px'alt=' 'class=\"img-responsive\" />
 				</div>
-				<div class="col-md-8 agileinfo_single_right">
+				<div class=\"col-md-8 agileinfo_single_right\">
 					<br/>
-					<div class="w3agile_description">
-						<h4>Description :</h4>
-						<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui 
-							officia deserunt mollit anim id est laborum.Duis aute irure dolor in 
-							reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-							pariatur.</p>
+					<div class=\"w3agile_description\">
+						<h4>商品描述:</h4>
+						<p>".$db["introduction"]."</p>
 					</div>
-					<div class="snipcart-item block">
-						<div class="snipcart-thumb agileinfo_single_right_snipcart">
-							<h4>$21.00 <span>$25.00</span></h4>
+					<div class=\"snipcart-item block\">
+						<div class=\"snipcart-thumb agileinfo_single_right_snipcart\">
+							<h4>$".$db["price"]."</h4>
 						</div>
-						<div class="snipcart-details agileinfo_single_right_details">
-							<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="76" data-name="Pulao basmati rice" data-summary="summary 76" data-price="21.00" data-quantity="1" data-image="images/76.png">Add to Cart</button>
+						<div class=\"snipcart-details agileinfo_single_right_details\">
+							<button class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."' data-summary='summary ".$db["gid"]."'  data-price='".$db["price"]."' data-quantity='1' data-image='".$db["picture"]."'>加入购物车</button>
 						</div>
 					</div>
 				</div>
-				<div class="clearfix"> </div>
+				<div class=\"clearfix\"> </div>
 			</div>
 		</div>
-		<div class="clearfix"></div>
-	</div>
+		<div class=\"clearfix\"></div>
+	</div>";						
+					}
+					
+				?>									
+		</div>
 <!-- //banner -->
 
 <!-- footer -->
+	
 	<?php include "foot.php" ?>
 <!-- //footer -->
 <!-- Bootstrap Core JavaScript -->

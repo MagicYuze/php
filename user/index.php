@@ -79,7 +79,38 @@
 		<div class="container">
 			<h3>热卖商品</h3>
 			<div class="agile_top_brands_grids">
-				<div class="col-md-3 top_brand_left">
+				<?php
+					$selectSQL="select * from goods limit 4"; //前4个
+					$resultSet=mysql_query($selectSQL);
+					while($db=mysql_fetch_array($resultSet)){
+						if($db["state"]==1){   //判断状态是否
+							echo "<div class=\"col-md-3 w3ls_w3l_banner_left\">
+						<div class=\"hover14 column\">
+						<div class=\"agile_top_brand_left_grid w3l_agile_top_brand_left_grid\">
+							<div class=\"agile_top_brand_left_grid_po\s\">
+								<img src=\"images/offer.png\" alt=\" \" class=\"img-responsive\" />
+							</div>
+							<div class=\"agile_top_brand_left_grid1\">
+								<figure>
+									<div class=\"snipcart-item block\">
+										<div class=\"snipcart-thumb\">"
+										."<a href='/php/user/single.php?gid=".$db["gid"]."'><img src='".$db["picture"]."' style='height:140px; width:140px;' alt=' ' class='img-responsive'></a>"
+										."<p>".$db["gname"]."</p>"
+										."<h4>$".$db["price"]."</h4></div>"
+
+										."<div class=\"snipcart-details\">
+											<button class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."'data-summary='summary ".$db["gid"]."' data-price='".$db["price"]."' data-quantity='1' data-image='".$db["picture"]."'>加入购物车</button>
+										</div>
+									</div>
+								</figure>
+							</div>
+						</div>
+						</div>
+					</div>";
+				    }
+				}
+				?>
+				<!--<div class="col-md-3 top_brand_left">
 					<div class="hover14 column">
 						<div class="agile_top_brand_left_grid">
 							<div class="agile_top_brand_left_grid1">
@@ -98,69 +129,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-3 top_brand_left">
-					<div class="hover14 column">
-						<div class="agile_top_brand_left_grid">
-							<div class="agile_top_brand_left_grid1">
-								<figure>
-									<div class="snipcart-item block" >
-										<div class="snipcart-thumb">
-											<a href="single.html"><img title=" " alt=" " src="images/3.png" /></a>		
-											<p>basmati rise (5 Kg)</p>
-											<h4>$11.99</h4>
-										</div>
-										<div class="snipcart-details top_brand_home_details">
-											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="2" data-name="Indian gate basmati rise" data-summary="summary 2" data-price="11.99" data-quantity="1" data-image="images/3.png">加入购物车</button>
-										</div>
-									</div>
-								</figure>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3 top_brand_left">
-					<div class="hover14 column">
-						<div class="agile_top_brand_left_grid">
-						
-							<div class="agile_top_brand_left_grid1">
-								<figure>
-									<div class="snipcart-item block">
-										<div class="snipcart-thumb">
-											<a href="single.html"><img src="images/2.png" alt=" " class="img-responsive" /></a>
-											<p>Pepsi soft drink (2 Ltr)</p>
-											<h4>$8.00</h4>
-										</div>
-										<div class="snipcart-details top_brand_home_details">
-											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="3" data-name="Pepsi soft drink bottles" data-summary="summary 3" data-price="8.00" data-quantity="1" data-image="images/2.png">加入购物车</button>
-										</div>
-									</div>
-								</figure>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3 top_brand_left">
-					<div class="hover14 column">
-						<div class="agile_top_brand_left_grid">
-							
-							<div class="agile_top_brand_left_grid1">
-								<figure>
-									<div class="snipcart-item block">
-										<div class="snipcart-thumb">
-											<a href="single.html"><img src="images/4.png" alt=" " class="img-responsive" /></a>
-											<p>dogs food (4 Kg)</p>
-											<h4>$9.00</h4>
-										</div>
-										<div class="snipcart-details top_brand_home_details">
-											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" data-id="4" data-name="Dogs food" data-summary="summary 4" data-price="9.00" data-quantity="1" data-image="images/4.png">加入购物车</button>
-										</div>
-									</div>
-								</figure>
-							</div>
-						</div>
-					</div>
-				</div>
+				</div> -->
 				<div class="clearfix"> </div>
 			</div>
 		</div>

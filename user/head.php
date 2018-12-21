@@ -37,11 +37,11 @@
 							<ul class="dropdown-menu drp-mnu">
 								<?php
 									if(isset($_SESSION["user"])){
-										 echo "<li><a href=\"login.php\" id=\"logoff\">Log off</a></li>";	
+										 echo "<li><a href=\"login.php\" id=\"logoff\">注销</a></li>";	
 									}
 									else{
-										echo "<li><a href=\"login.php\">Login</a></li>"; 
-										echo "<li><a href=\"login.php\">Sign Up</a></li>";
+										echo "<li><a href=\"login.php\">登录</a></li>"; 
+										echo "<li><a href=\"login.php\">注册</a></li>";
 									}
 								?>
 								<script>
@@ -83,11 +83,10 @@
 			</div>
 			<div class="w3ls_logo_products_left1">
 				<ul class="special_items">
-					<li>	
-						<span class="glyphicon glyphicon-shopping-cart my-cart-icon" style="cursor: pointer">
-							<a href="javascript:void(0)">
+					<li>
+						<span class="glyphicon glyphicon-shopping-cart my-cart-icon" style="cursor: pointer"><a href="javascript:void(0)">
 								<i class="badge badge-notify my-cart-badge"></i>&nbsp;&nbsp;购物车
-							</a>
+						 </a>
 						</span><i>/</i>
 					</li>
 					<li><a href="about.html"><img src="./images/orderform.jpg" width="16px" height="16px" style="margin-top:-2px;">&nbsp;订单</a><i>/</i></li>
@@ -111,8 +110,8 @@
 	<div class="products-breadcrumb">
 		<div class="container">
 			<ul>
-				<li><i class="fa fa-home" aria-hidden="true"></i><a href="index.php">Home</a><span>|</span></li>
-				<li>Events</li>
+				<li><i class="fa fa-home" aria-hidden="true"></i><a href="index.php">首页</a><span>|</span></li>
+				<li>商品</li>
 			</ul>
 		</div>
 	</div>

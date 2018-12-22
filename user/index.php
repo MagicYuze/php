@@ -96,10 +96,10 @@
 										<div class=\"snipcart-thumb\">"
 										."<a href='/php/user/single.php?gid=".$db["gid"]."'><img src='".$db["picture"]."' style='height:140px; width:140px;' alt=' ' class='img-responsive'></a>"
 										."<p>".$db["gname"]."</p>"
-										."<h4>$".$db["price"]."</h4></div>"
+										."<h4>￥".$db["price"]."</h4></div>"
 
 										."<div class=\"snipcart-details\">
-											<button class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."'data-summary='summary ".$db["gid"]."' data-price='".$db["price"]."' data-quantity='1' data-image='".$db["picture"]."'>加入购物车</button>
+											<button class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."'data-summary='".$db["introduction"]."' data-price='".$db["price"]."' data-quantity='1' data-image='".$db["picture"]."'>加入购物车</button>
 										</div>
 									</div>
 								</figure>

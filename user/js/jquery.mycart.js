@@ -64,6 +64,7 @@ $(document).ready(function () {
     }
     var setAllProducts = function(products){
       localStorage.products = JSON.stringify(products);
+      $("#json_data").val(encodeURI(localStorage.products));
       // localStorage.product = JSON.stringify(products);
     }
     var addProduct = function(id, name, summary, price, quantity, image) {
@@ -196,7 +197,7 @@ $(document).ready(function () {
         '</div>' +
         '<div class="modal-body">' +
         '<form action="/php/user/handleCartData.php" method="post">'+
-        '<input type="hidden" name="json_data" value="'+encodeURI(localStorage.products)+'" />'+
+        '<input id="json_data" type="hidden" name="json_data" value="" />'+
         '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
         '<hr><div style="text-align:right;"><input type="submit" name="submit" class="btn btn-default" value="立即付款" id="clearCart"></input><div>' + 
         '</form>'+
@@ -206,6 +207,7 @@ $(document).ready(function () {
         '</div>'
         );
     }
+
 
     var drawTable = function(){
       var $cartTable = $("#" + idCartTable);

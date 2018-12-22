@@ -73,10 +73,10 @@
 
 					$selectGood='';									
 					if(isset($cid)){ //分类的sql语句				
-						$selectGood="select * from goods where cid='".$cid."'";   //总数据
+						$selectGood="select * from goods where cid='".$cid."' and gcount>0 and state=1";   //总数据
 					}
 					else if(isset($gname)){   //这是搜索的sql语句(不同于上面:不需要再取cname了)
-						$selectGood="select * from goods where gname LIKE '%".$gname."%'";
+						$selectGood="select * from goods where gname LIKE '%".$gname."%' and gcount>0 and state=1";
 					}
 
 					$resultSet=mysql_query($selectGood);

@@ -20,6 +20,7 @@
 				if($db["state"]==1 && $db["level"]==0){
 
 					$_SESSION["user"]=$db["uid"];   //存现有user的id
+					$_SESSION["username"]=$db["uname"];  //存现有user的名字
 
 					echo "<script>alert('登录成功！')</script>";
             		echo "<script>window.location.href='index.php'</script>";

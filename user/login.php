@@ -40,6 +40,7 @@
 		$type=$_GET['type'];
 		if($type=="log"){  //注销
 			unset($_SESSION["user"]);
+			unset($_SESSION["username"]);
 			echo "<script>window.location.href='login.php'</script>";
 		}
 	}

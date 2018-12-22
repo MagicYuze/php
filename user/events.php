@@ -37,25 +37,56 @@
 <!-- header -->
 <?php include "head.php"?>
 <div class="w3l_banner_nav_right">
-	<div class="events">
-			<h3>订单</h3>
-
-			<div class="w3agile_event_grids">
-				<div class="col-md-6 w3agile_event_grid">
-					<div class="col-md-3 w3agile_event_grid_left">
-						<i class="fa">待收货</i>
-					</div>
-					<div class="col-md-9 w3agile_event_grid_right">
-					<p><a href="orderform.php"><h4>订单号：1234567894512156484121</h4></a></p>
-						<p><h4>订单时间：2018/12/21</h4></p>
-						<h4>订单总金额：¥189</h4>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-			</div>
-			<div class="clearfix"> </div>
-	</div>
+  <div class="events">
+      <h3>订单</h3>
+      <?php
+          if(isset($_SESSION["user"])){    //已经登录的情况
+             $uid=$_SESSION["user"];
+             $title='';
+             $selectSQL="select * from orders where uid='".$uid."'";
+             $resultSet=mysql_query($selectSQL);
+             while($db=mysql_fetch_array($resultSet)){
+                if($db["state"]==0) $title="待发货";
+                else if($db["state"]==1) $title="待收货";
+                else if($db["state"]==2) $title="已完成";
+                echo "<div class=\"w3agile_event_grids\">
+        <div class=\"col-md-6 w3agile_event_grid\">
+          <div class=\"col-md-3 w3agile_event_grid_left\"><i class=\"fa\">".$title."</i></div>
+          <div class=\"col-md-9 w3agile_event_grid_right\"><p><a href='orderform.php?oid=".$db["oid"]."'><h4>订单号：".$db["oid"]."</h4></a></p>
+            <p><h4>订单时间：".$db["odate"]."</h4></p>
+            <h4>订单总金额：".$db["money"]."</h4>
+          </div>
+          <div class=\"clearfix\"> </div>
+        </div>
+      </div>
+      <div class=\"clearfix\"> </div><br/>";
+          ;
+             }             
+          }
+      ?>
+      </div>
 </div>
+
+<!--<div class="w3l_banner_nav_right">
+  <div class="events">
+      <h3>订单</h3>
+
+      <div class="w3agile_event_grids">
+        <div class="col-md-6 w3agile_event_grid">
+          <div class="col-md-3 w3agile_event_grid_left">
+            <i class="fa">待收货</i>
+          </div>
+          <div class="col-md-9 w3agile_event_grid_right">
+          <p><a href="orderform.php"><h4>订单号：1234567894512156484121</h4></a></p>
+            <p><h4>订单时间：2018/12/21</h4></p>
+            <h4>订单总金额：¥189</h4>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+      <div class="clearfix"> </div>
+  </div>
+</div>-->
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>

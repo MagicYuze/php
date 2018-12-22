@@ -45,6 +45,77 @@
 	<table>
 		<tbody>
 			<tr>
+				<td class="text-center" style="width: 50px"></td>
+				<td title="name" width="200px">商品名称</td>
+				<td title="num" width="200px">数量</td>
+				<td title="price" width="200px">单价</td>
+			</tr>
+			<?php
+				$title=' ';
+				if(isset($_GET["type"])){  //确认收货
+					$oid=$_GET["oid"];
+					$updateSQL="update orders SET state=2 where oid='".$oid."'";
+				}
+				if(isset($_GET["oid"])){  //查看时,即只传进订单号时
+					$oid=$_GET["oid"];
+					$selectSQL="select * from orders where oid='".$oid."'";
+					$resultSet=mysql_query($selectSQL);
+					while($db=mysql_fetch_array($resultSet)){
+
+						//判断是否出现确认收货按钮(已完成的订单没有)
+						if($db["state"]!=2){
+							$title="确认收货";
+						}
+
+						//把数据库中url编码的转成json编码的数据,然后进行解码
+						$json_url = $db['goodslist'];
+						$goodslist = URLdecode($json_url);
+						$json_data = json_decode($goodslist);
+						$item_num = count($json_data);
+						$order = array();
+
+						foreach((array)$json_data as $item){						  
+							$goods = array(	
+							      'gid' => $item->gid,
+							      'gnum' => $item->gnum
+						    );
+							//往二维数组追加元素
+							array_push($order,$goods);
+						}
+
+						$price;
+						foreach ($order as $key => $value) {   //从二维数组中取数据(特定的结构:gid,gnum顺序)
+    						foreach ($value as $k => $v) { 							
+        						if($k=="gid"){  //商品的id
+        							$sqls="select * from goods where gid='".$v."'";
+        							$result=mysql_query($sqls);
+        							while($row=mysql_fetch_array($result)){
+        								echo "<tr>";
+        								echo "<td class=\"text-center\" style=\"width: 50px\">";
+        								echo "<img width=\"50px\" height=\"50px\" src='".$row['picture']."'></td>";
+        								echo "<td title=\"name\" width=\"200px\">".$row["gname"]."</td>";
+        								$price=$row["price"];
+        							}
+        						}else if($k=="gnum"){  //订单中的商品数量
+        							echo "<td title=\"num\" width=\"200px\">".$v."</td>";
+        							echo "<td title=\"price\" width=\"200px\">".$price."</td>";
+        							echo "</tr>";
+        						}
+    						}
+
+						}
+
+						echo "<tr>
+							<td class=\"text-center\" style=\"width: 50px\"></td>
+							<td title=\"name\">总价</td>
+							<td title=\"price\"></td>
+							<td title=\"total\">¥".$db["money"]."</td>
+						</tr>";
+					}
+				}
+				
+			?>
+			<!--<tr>
 				<td class="text-center" style="width: 50px">
 					<img width="50px" height="50px" src="images/2.png"></td>
 				<td title="name" width="200px">百事可乐</td>
@@ -63,13 +134,16 @@
 				<td title="name">总价</td>
 				<td title="price"></td>
 				<td title="total">¥40.00</td>
-			</tr>
+			</tr>-->
 		</tbody>
 	</table>
 	
 	<div class="modal-footer">
-		<button type="button" class="btn btn-default">确认收货</button>&nbsp;
-		<button type="button" class="btn btn-default"><a href="events.php">返回</a></button>
+		<?php
+			if($title!=' ')
+				echo "<a href=/php/user/orderform.php?type=ok&oid=".$_GET["oid"]."'><button type=\"button\" class=\"btn btn-default\">".$title."</button></a>&nbsp";
+		?>
+		<a href="events.php"><button type="button" class="btn btn-default">返回</button></a>
 	</div>
 </div>
 

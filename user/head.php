@@ -31,7 +31,12 @@
 		<div class="w3l_header_right">
 			<ul>
 				<li class="dropdown profile_details_drop">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i><span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i><span class="caret">
+						<?php 
+							if(isset($_SESSION["username"])){  //登录后存的用户名
+								echo $_SESSION["username"];
+							}
+						?></span></a>
 					<div class="mega-dropdown-menu">
 						<div class="w3ls_vegetables">
 							<ul class="dropdown-menu drp-mnu">
@@ -78,13 +83,24 @@
 			</div>
 			<div class="w3ls_logo_products_left1">
 				<ul class="special_items">
-					<li>
+					<?php
+						if(isset($_SESSION['user'])){		//已登录
+							echo "<li>
+						<span class=\"glyphicon glyphicon-shopping-cart my-cart-icon\" style=\"cursor: pointer\"><a href=\"javascript:void(0)\">
+								<i class=\"badge badge-notify my-cart-badge\"></i>&nbsp;&nbsp;购物车
+						 </a>
+						</span><i>/</i>
+					</li>
+					<li><a href=\"events.php\"><img src=\"./images/orderform.jpg\" width=\"16px\" height=\"16px\" style=\"margin-top:-2px;\">&nbsp;订单</a><i>/</i></li>";
+						}
+					?>
+					<!--<li>
 						<span class="glyphicon glyphicon-shopping-cart my-cart-icon" style="cursor: pointer"><a href="javascript:void(0)">
 								<i class="badge badge-notify my-cart-badge"></i>&nbsp;&nbsp;购物车
 						 </a>
 						</span><i>/</i>
 					</li>
-					<li><a href="events.php"><img src="./images/orderform.jpg" width="16px" height="16px" style="margin-top:-2px;">&nbsp;订单</a><i>/</i></li>
+					<li><a href="events.php"><img src="./images/orderform.jpg" width="16px" height="16px" style="margin-top:-2px;">&nbsp;订单</a><i>/</i></li>-->
 
 					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

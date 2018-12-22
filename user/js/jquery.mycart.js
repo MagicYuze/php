@@ -196,7 +196,7 @@ $(document).ready(function () {
         '<form action="/php/user/handleCartData.php" method="post">'+
         '<input type="hidden" name="json_data" value="'+encodeURI(localStorage.products)+'" />'+
         '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
-        '<hr><div style="text-align:right;"><input type="submit" name="submit" class="btn btn-default" value="立即付款"></input><div>' + 
+        '<hr><div style="text-align:right;"><input type="submit" name="submit" class="btn btn-default" value="立即付款" id="clearCart"></input><div>' + 
         '</form>'+
         '</div>' +
         '</div>' +
@@ -275,16 +275,23 @@ $(document).ready(function () {
     EVENT
     */
     if(options.affixCartIcon) {
-      var cartIconBottom = $cartIcon.offset().top * 1 + $cartIcon.css("height").match(/\d+/) * 1;
-      var cartIconPosition = $cartIcon.css('position');
-      $(window).scroll(function () {
-        if ($(window).scrollTop() >= cartIconBottom) {
-          $cartIcon.css('position', 'fixed').css('z-index', '999').addClass(classAffixMyCartIcon);
-        } else {
-          $cartIcon.css('position', cartIconPosition).css('background-color', 'inherit').removeClass(classAffixMyCartIcon);
-        }
-      });
+      typeof $cartIcon.offset() != "undefined" ? true : false;
+      if($cartIcon.offset()){
+          var cartIconBottom = $cartIcon.offset().top * 1 + $cartIcon.css("height").match(/\d+/) * 1;
+          var cartIconPosition = $cartIcon.css('position');
+          $(window).scroll(function () {
+          if ($(window).scrollTop() >= cartIconBottom) {
+            $cartIcon.css('position', 'fixed').css('z-index', '999').addClass(classAffixMyCartIcon);
+          } else {
+            $cartIcon.css('position', cartIconPosition).css('background-color', 'inherit').removeClass(classAffixMyCartIcon);
+          }
+        });
+      }
     }
+
+    /*$("#clearCart").click(function(){        
+        localStorage.products="";
+    });*/
 
     $cartIcon.click(function(){
       options.showCheckoutModal ? showModal() : options.clickOnCartIcon($cartIcon, ProductManager.getAllProducts(), ProductManager.getTotalPrice(), ProductManager.getTotalQuantity());

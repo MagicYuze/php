@@ -48,7 +48,7 @@ if(isset($_POST['submit'])){
 	$res = mysql_query($sql);
 
 	if(mysql_affected_rows()>0){
-		echo '<script>alert("恭喜您，购买成功！请等待发货！");window.location="index.php";localStorage.products="";</script>';
+		echo '<script>alert("恭喜您，购买成功！请等待发货！");localStorage.products="";window.location="index.php";</script>';
 	}else{
 		echo '<script>alert("'.$sql.'");</script>';
 	}

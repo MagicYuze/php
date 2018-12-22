@@ -50,6 +50,7 @@ $(document).ready(function () {
     PRIVATE
     */
     localStorage.products = localStorage.products ? localStorage.products : "";
+    // localStorage.product = localStorage.product ? localStorage.product : "";
     var getIndexOfProduct = function(id){
       var productIndex = -1;
       var products = getAllProducts();
@@ -63,6 +64,7 @@ $(document).ready(function () {
     }
     var setAllProducts = function(products){
       localStorage.products = JSON.stringify(products);
+      // localStorage.product = JSON.stringify(products);
     }
     var addProduct = function(id, name, summary, price, quantity, image) {
       var products = getAllProducts();

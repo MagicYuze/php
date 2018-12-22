@@ -76,7 +76,7 @@
     /*
     PUBLIC
     */
-    var getAllProducts = function(){
+    var getAllProducts = function(){   //开始取所有商品,本地的
       try {
         var products = JSON.parse(localStorage.products);
         return products;
@@ -359,7 +359,7 @@
   }
 
 
-  $.fn.myCart = function (userOptions) {
+  $.fn.myCart = function (userOptions) {   //应该是开始
     loadMyCartEvent(userOptions);
     return $.each(this, function () {
       new MyCart(this, userOptions);

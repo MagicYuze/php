@@ -42,10 +42,23 @@
 				<h3>Best Deals For New Products<span class="blink_me"></span></h3>
 			</div>
 			<?php
-				$cid=$_GET['cid'];
-				$selectCid="select * from category where cid='".$cid."'";
-				$resultSet=mysql_query($selectCid);
-				$cname="";
+				$gname;
+				$cid;
+				$cname;
+
+				if(isset($_POST['gname'])){  //搜索功能,判断gname是否为空，以区分分类商品功能(POST的方式)
+					$gname=$_POST['gname'];
+					$selectSQ="select * from goods,category where gname LIKE '%".$gname."%' and goods.cid=category.cid";  //商品名称存在				
+				}else if(isset($_GET['gname'])){   //(GET的方式,分页要用到)
+					$gname=$_GET['gname'];
+					$selectSQ="select * from goods,category where gname LIKE '%".$gname."%' and goods.cid=category.cid";
+				}
+				else if(isset($_GET['cid'])){
+					$cid=$_GET['cid'];
+					$selectSQ="select * from category where cid='".$cid."'";  //分类id存在
+				}
+
+				$resultSet=mysql_query($selectSQ);
 				while($db=mysql_fetch_array($resultSet)){  //只是取个种类名字
 					$cname=$db["cname"];
 				}
@@ -58,7 +71,14 @@
 					$page_size=$_GET["page_size"];  //几个为一页
 					$page_current=$_GET["page_current"];  //当前页数
 
-					$selectGood="select * from goods where cid='".$cid."'";   //总数据
+					$selectGood='';									
+					if(isset($cid)){ //分类的sql语句				
+						$selectGood="select * from goods where cid='".$cid."'";   //总数据
+					}
+					else if(isset($gname)){   //这是搜索的sql语句(不同于上面:不需要再取cname了)
+						$selectGood="select * from goods where gname LIKE '%".$gname."%'";
+					}
+
 					$resultSet=mysql_query($selectGood);
 
 					$total_records=mysql_num_rows($resultSet);  //总记录条数
@@ -66,7 +86,12 @@
 					$start_records=($page_current-1)*$page_size;  //limit开始的条数
 					$end_records=$page_size;  //limit的条数
 
-					$selectGood="select * from goods where cid='".$cid."' limit ".$start_records.",".$end_records;
+					if(isset($cid)){ //分类的sql语句				
+						$selectGood="select * from goods where cid='".$cid."' limit ".$start_records.",".$end_records;
+					}
+					else if(isset($gname)){   //这是搜索的sql语句
+						$selectGood="select * from goods where gname LIKE '%".$gname."%' limit ".$start_records.",".$end_records;
+					}
 
 					$resultSet=mysql_query($selectGood);  //根据数据库取对应条数的
 
@@ -97,8 +122,12 @@
 					</div>";
 				    }
 				}
-				  $url="/php/user/products.php?&page_size=".$page_size."&cid=".$cid;
-
+					$url;
+					if(isset($cid)){ //分类的url	
+				  		$url="/php/user/products.php?&page_size=".$page_size."&cid=".$cid;
+				  	}else if(isset($gname)){
+				  		$url="/php/user/products.php?&page_size=".$page_size."&gname=".$gname;
+				  	}
 				  echo "<div style='margin-top:400px; margin-left:780px;'>";
 				  page($total_records,$page_size,$page_current,$url,null);
 				  echo "</div>";

@@ -10,10 +10,10 @@
 			<a href="index.php">今日特卖</a>
 		</div>
 		<div class="w3l_search">
-			<!-- <form action="#" method="post">
-				<input type="text" name="Product" value="Search a product..." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search a product...';}" required="">
+			<form action="/php/user/products.php?page_current=1&page_size=4" method="post">
+				<input type="text" name="gname" value="搜索商品..." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '搜索商品...';}" required="">
 				<input type="submit" value=" ">
-			</form> -->
+			</form>
 		</div>
 		<div class="w3l_header_right">
 			<ul>

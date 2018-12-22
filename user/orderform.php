@@ -55,6 +55,8 @@
 				if(isset($_GET["type"])){  //确认收货
 					$oid=$_GET["oid"];
 					$updateSQL="update orders SET state=2 where oid='".$oid."'";
+					$res=mysql_query($updateSQL);
+					echo "<script>alert('恭喜您，确认收货成功！');window.location='events.php'</script>";
 				}
 				if(isset($_GET["oid"])){  //查看时,即只传进订单号时
 					$oid=$_GET["oid"];
@@ -63,7 +65,8 @@
 					while($db=mysql_fetch_array($resultSet)){
 
 						//判断是否出现确认收货按钮(已完成的订单没有)
-						if($db["state"]!=2){
+						//判断是否出现确认收货按钮(待收货订单才有  MagicYang更正 2018年12月22日23点29分)
+						if($db["state"]==1){
 							$title="确认收货";
 						}
 
@@ -141,7 +144,7 @@
 	<div class="modal-footer">
 		<?php
 			if($title!=' ')
-				echo "<a href=/php/user/orderform.php?type=ok&oid=".$_GET["oid"]."'><button type=\"button\" class=\"btn btn-default\">".$title."</button></a>&nbsp";
+				echo "<a href=\"/php/user/orderform.php?type=ok&oid=".$_GET["oid"]."\"><button type=\"button\" class=\"btn btn-default\">".$title."</button></a>&nbsp";
 		?>
 		<a href="events.php"><button type="button" class="btn btn-default">返回</button></a>
 	</div>

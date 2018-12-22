@@ -118,7 +118,8 @@
 						  		$state="已完成";
 						  	}
 
-							$goodslist = $row['goodslist'];
+							$json_url = $row['goodslist'];
+							$goodslist = URLdecode($json_url);
 						    $json_data = json_decode($goodslist);
 							$item_num = count($json_data);
 						    $order = array();

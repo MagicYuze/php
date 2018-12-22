@@ -29,7 +29,8 @@
 		$password = $_POST['password'];
 		$phone = $_POST['phone'];
 		$email = $_POST['email'];
-		$level = $_POST['level'];
+		if(isset($_POST['level']))
+			$level = $_POST['level'];
 		
 		$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
 	    if (!$con){
@@ -45,7 +46,7 @@
 		    $res = mysql_query($sql);
 
 		    if(mysql_affected_rows()>0){
-		    	echo '<script>alert("恭喜您，添加用户成功！");window.location="showuser.php"</script>';
+		    	echo '<script>alert("恭喜您，添加用户成功！");window.location="showUser.php"</script>';
 		    }else{
 		    	echo "<script>alert('$res');</script>";
 		    }
@@ -54,7 +55,7 @@
 	    	$sql = 'UPDATE user SET uname = "'.$uname.'",password="'.$password.'",phone="'.$phone.'",email="'.$email.'" WHERE uid = '.$uid;
 	    	$res = mysql_query($sql);
 	    	if(mysql_affected_rows()>0){
-		    	echo '<script>alert("恭喜您，修改用户信息成功！");window.location="showuser.php"</script>';
+		    	echo '<script>alert("恭喜您，修改用户信息成功！");window.location="showUser.php"</script>';
 		    }else{
 		    	echo "<script>alert('不好意思，修改用户信息失败……');</script>";
 		    }
@@ -138,22 +139,25 @@
 							  </div>
 							</div>
 							<?php
+							if(!isset($_GET['uid'])){
 								if(!$level){
 									$tip = "普通用户";
 								}else{
 									$tip = "管理员";
 								}
-							?>
+							echo '
 							<div class="control-group">
 								<label class="control-label" for="level">用户权限：</label>
 								<div class="controls">
 									<select id="level" name="level">
-										<option selected="selected" value="<?php echo $level?>"><?php echo $tip?></option>
+										<option selected="selected" value="'.$level.'">'.$tip.'</option>
 										<option value="0">普通用户</option>
 										<option value="1">管理员</option>
 									</select>
 								</div>
-							</div>
+							</div>';
+							}	
+							?>
 							<div class="control-group">
 							  <label class="control-label" for="phone">手机号：</label>
 							  <div class="controls">

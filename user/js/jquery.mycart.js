@@ -3,7 +3,11 @@
 * http://asraf-uddin-ahmed.github.io/
 * Copyright (c) 2016 Asraf Uddin Ahmed; Licensed None
 */
-
+$(document).ready(function () {
+    setInterval(function() {
+        $("#body").load(location.href+" #body>*","");
+    }, 1000);
+});
 (function ($) {
 
   "use strict";
@@ -76,7 +80,7 @@
     /*
     PUBLIC
     */
-    var getAllProducts = function(){   //开始取所有商品,本地的
+    var getAllProducts = function(){
       try {
         var products = JSON.parse(localStorage.products);
         return products;
@@ -175,9 +179,10 @@
     var idDiscountPrice = 'my-cart-discount-price';
     var classProductTotal = 'my-product-total';
     var classAffixMyCartIcon = 'my-cart-icon-affix';
-
+ // $(document).ready(function(){
+ //    setInterval(loadMyCartEvent, 1000);
+ //   });
     $cartBadge.text(ProductManager.getTotalQuantity());
-
     if(!$("#" + idCartModal).length) {
       $('body').append(
         '<div class="modal fade" id="' + idCartModal + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +
@@ -188,15 +193,16 @@
         '<h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-shopping-cart"></span> My Cart</h4>' +
         '</div>' +
         '<div class="modal-body">' +
+        '<form action="/php/user/handleCartData.php" method="post">'+
+        '<input type="hidden" name="json_data" value="'+encodeURI(localStorage.products)+'" />'+
         '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
-        '</div>' +
-        '<div class="modal-footer">' +
-        '<button type="button" class="btn btn-default">立即付款</button>&nbsp;<button type="button" class="btn btn-default">确认修改</button>' + 
+        '<hr><div style="text-align:right;"><input type="submit" name="submit" class="btn btn-default" value="立即付款"></input><div>' + 
+        '</form>'+
         '</div>' +
         '</div>' +
         '</div>' +
         '</div>'
-      );
+        );
     }
 
     var drawTable = function(){
@@ -211,25 +217,25 @@
           '<tr title="' + this.summary + '" data-id="' + this.id + '" data-price="' + this.price + '">' +
           '<td class="text-center" style="width: 30px;"><img width="30px" height="30px" src="' + this.image + '"/></td>' +
           '<td>' + this.name + '</td>' +
-          '<td title="Unit Price">$' + this.price + '</td>' +
-          '<td title="Quantity"><input type="number" min="1" style="width: 70px;" class="' + classProductQuantity + '" value="' + this.quantity + '"/></td>' +
-          '<td title="Total" class="' + classProductTotal + '">$' + total + '</td>' +
-          '<td title="Remove from Cart" class="text-center" style="width: 30px;"><a href="javascript:void(0);" class="btn btn-xs btn-danger ' + classProductRemove + '">X</a></td>' +
+          '<td title="单价">￥' + this.price + '</td>' +
+          '<td title="数量">'+this.quantity+'</td>' +
+          '<td title="总价" class="' + classProductTotal + '">￥' + total + '</td>' +
+          '<td title="移出购物车" class="text-center" style="width: 30px;"><a href="javascript:void(0);" class="btn btn-xs btn-danger ' + classProductRemove + '">X</a></td>' +
           '</tr>'
-        );
+          );
       });
 
       $cartTable.append(products.length ?
         '<tr>' +
         '<td></td>' +
-        '<td><strong>Total</strong></td>' +
+        '<td><strong>总金额</strong></td>' +
         '<td></td>' +
         '<td></td>' +
-        '<td><strong id="' + idGrandTotal + '">$</strong></td>' +
+        '<td><strong id="' + idGrandTotal + '">￥</strong></td>' +
         '<td></td>' +
         '</tr>'
-        : '<div class="alert alert-danger" role="alert" id="' + idEmptyCartMessage + '">Your cart is empty</div>'
-      );
+        : '<div class="alert alert-danger" role="alert" id="' + idEmptyCartMessage + '">您的购物车为空。</div>'
+        );
 
       /*var discountPrice = options.getDiscountPrice(products, ProductManager.getTotalPrice(), ProductManager.getTotalQuantity());
       if(products.length && discountPrice !== null) {
@@ -259,11 +265,11 @@
       });
     }
     var showGrandTotal = function(){
-      $("#" + idGrandTotal).text("$" + ProductManager.getTotalPrice());
+      $("#" + idGrandTotal).text("￥" + ProductManager.getTotalPrice());
     }
-    var showDiscountPrice = function(){
-      $("#" + idDiscountPrice).text("$" + options.getDiscountPrice(ProductManager.getAllProducts(), ProductManager.getTotalPrice(), ProductManager.getTotalQuantity()));
-    }
+    // var showDiscountPrice = function(){
+    //   $("#" + idDiscountPrice).text("￥" + options.getDiscountPrice(ProductManager.getAllProducts(), ProductManager.getTotalPrice(), ProductManager.getTotalQuantity()));
+    // }
 
     /*
     EVENT
@@ -289,7 +295,7 @@
       var id = $(this).closest("tr").data("id");
       var quantity = $(this).val();
 
-      $(this).parent("td").next("." + classProductTotal).text("$" + (price * quantity).toFixed(2));
+      $(this).parent("td").next("." + classProductTotal).text("￥" + (price * quantity).toFixed(2));
       ProductManager.updatePoduct(id, quantity);
 
       $cartBadge.text(ProductManager.getTotalQuantity());
@@ -359,12 +365,10 @@
   }
 
 
-  $.fn.myCart = function (userOptions) {   //应该是开始
+  $.fn.myCart = function (userOptions) {
     loadMyCartEvent(userOptions);
     return $.each(this, function () {
       new MyCart(this, userOptions);
     });
   }
-
-
 })(jQuery);

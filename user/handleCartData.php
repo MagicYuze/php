@@ -42,15 +42,20 @@ if(isset($_POST['submit'])){
 		$gnum = $item->quantity;
 		$money+=$price*$gnum;
 	}
-	include_once("functions/database.php");
-	get_connection();
-	$sql = 'INSERT INTO orders (oid,odate,uid,goodslist,state,money) VALUES ("'.$oid.'",now(),'.$uid.',"'.$json_url.'",0,'.$money.');';
-	$res = mysql_query($sql);
+	if($money){
+		include_once("functions/database.php");
+		get_connection();
+		$sql = 'INSERT INTO orders (oid,odate,uid,goodslist,state,money) VALUES ("'.$oid.'",now(),'.$uid.',"'.$json_url.'",0,'.$money.');';
+		$res = mysql_query($sql);
 
-	if(mysql_affected_rows()>0){
-		echo '<script>alert("恭喜您，购买成功！请等待发货！");localStorage.products="";window.location="index.php";</script>';
+		if(mysql_affected_rows()>0){
+			echo '<script>alert("恭喜您，购买成功！请等待发货！");localStorage.products="";window.location="index.php";</script>';
+		}else{
+			echo '<script>alert("不好意思，购买失败！请确认您的操作！");window.location="index.php";</script>';
+		}
+		close_connection();
 	}else{
-		echo '<script>alert("'.$sql.'");</script>';
+		echo '<script>alert("您的购物车为空，请购买后再结算！");window.location="index.php";</script>';
 	}
-}close_connection();
+}
 ?>

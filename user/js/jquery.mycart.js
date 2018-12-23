@@ -4,9 +4,9 @@
 * Copyright (c) 2016 Asraf Uddin Ahmed; Licensed None
 */
 $(document).ready(function () {
-    setInterval(function() {
-        $("#body").load(location.href+" #body>*","");
-    }, 1000);
+  setInterval(function() {
+    $("#body").load(location.href+" #body>*","");
+  }, 1000);
 });
 (function ($) {
 
@@ -185,61 +185,62 @@ $(document).ready(function () {
  // $(document).ready(function(){
  //    setInterval(loadMyCartEvent, 1000);
  //   });
-    $cartBadge.text(ProductManager.getTotalQuantity());
-    if(!$("#" + idCartModal).length) {
-      $('body').append(
-        '<div class="modal fade" id="' + idCartModal + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +
-        '<div class="modal-dialog" role="document">' +
-        '<div class="modal-content">' +
-        '<div class="modal-header">' +
-        '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-        '<h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-shopping-cart"></span> My Cart</h4>' +
-        '</div>' +
-        '<div class="modal-body">' +
-        '<form action="/php/user/handleCartData.php" method="post">'+
-        '<input id="json_data" type="hidden" name="json_data" value="" />'+
-        '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
-        '<hr><div style="text-align:right;"><input type="submit" name="submit" class="btn btn-default" value="立即付款" id="clearCart"></input><div>' + 
-        '</form>'+
-        '</div>' +
-        '</div>' +
-        '</div>' +
-        '</div>'
-        );
-    }
+ $cartBadge.text(ProductManager.getTotalQuantity());
 
+ if(!$("#" + idCartModal).length) {
+  $('body').append(
+    '<div class="modal fade" id="' + idCartModal + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +
+    '<div class="modal-dialog" role="document">' +
+    '<div class="modal-content">' +
+    '<div class="modal-header">' +
+    '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+    '<h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-shopping-cart"></span> My Cart</h4>' +
+    '</div>' +
+    '<div class="modal-body">' +
+    '<form action="/php/user/handleCartData.php" method="post">'+
+    '<input id="json_data" type="hidden" name="json_data" value="" />'+
+    '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
+    '<hr><div style="text-align:right;"><input type="button" name="clearCart" class="btn btn-default" value="清空购物车" id="clearCart">'+
+    '</input>&nbsp;&nbsp;<input type="submit" name="submit" class="btn btn-default" value="立即付款"><div>' + 
+    '</form>'+
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>'
+    );
+}
 
-    var drawTable = function(){
-      var $cartTable = $("#" + idCartTable);
-      $cartTable.empty();
+var drawTable = function(){
+  var $cartTable = $("#" + idCartTable);
+  $cartTable.empty();
 
-      var products = ProductManager.getAllProducts();
-      $.each(products, function(){
-        var total = this.quantity * this.price;
+  var products = ProductManager.getAllProducts();
+  $.each(products, function(){
+    var total = this.quantity * this.price;
         total.toFixed(2);    //四舍五入，保留两位小数
         $cartTable.append(
           '<tr title="' + this.summary + '" data-id="' + this.id + '" data-price="' + this.price + '">' +
           '<td class="text-center" style="width: 30px;"><img width="30px" height="30px" src="' + this.image + '"/></td>' +
           '<td>' + this.name + '</td>' +
           '<td title="单价">￥' + this.price + '</td>' +
-          '<td title="数量">'+this.quantity+'</td>' +
+          '<td title="数量"><input type="number" min="1" style="width: 70px;" class="' + classProductQuantity + '" value="' + this.quantity + '"/></td>' +
           '<td title="总价" class="' + classProductTotal + '">￥' + total + '</td>' +
           '<td title="移出购物车" class="text-center" style="width: 30px;"><a href="javascript:void(0);" class="btn btn-xs btn-danger ' + classProductRemove + '">X</a></td>' +
           '</tr>'
           );
       });
 
-      $cartTable.append(products.length ?
-        '<tr>' +
-        '<td></td>' +
-        '<td><strong>总金额</strong></td>' +
-        '<td></td>' +
-        '<td></td>' +
-        '<td><strong id="' + idGrandTotal + '">￥</strong></td>' +
-        '<td></td>' +
-        '</tr>'
-        : '<div class="alert alert-danger" role="alert" id="' + idEmptyCartMessage + '">您的购物车为空。</div>'
-        );
+  $cartTable.append(products.length ?
+    '<tr>' +
+    '<td></td>' +
+    '<td><strong>总金额</strong></td>' +
+    '<td></td>' +
+    '<td></td>' +
+    '<td><strong id="' + idGrandTotal + '">￥</strong></td>' +
+    '<td></td>' +
+    '</tr>'
+    : '<div class="alert alert-danger" role="alert" id="' + idEmptyCartMessage + '">您的购物车为空。</div>'
+    );
 
       /*var discountPrice = options.getDiscountPrice(products, ProductManager.getTotalPrice(), ProductManager.getTotalQuantity());
       if(products.length && discountPrice !== null) {
@@ -281,9 +282,9 @@ $(document).ready(function () {
     if(options.affixCartIcon) {
       typeof $cartIcon.offset() != "undefined" ? true : false;
       if($cartIcon.offset()){
-          var cartIconBottom = $cartIcon.offset().top * 1 + $cartIcon.css("height").match(/\d+/) * 1;
-          var cartIconPosition = $cartIcon.css('position');
-          $(window).scroll(function () {
+        var cartIconBottom = $cartIcon.offset().top * 1 + $cartIcon.css("height").match(/\d+/) * 1;
+        var cartIconPosition = $cartIcon.css('position');
+        $(window).scroll(function () {
           if ($(window).scrollTop() >= cartIconBottom) {
             $cartIcon.css('position', 'fixed').css('z-index', '999').addClass(classAffixMyCartIcon);
           } else {
@@ -292,10 +293,12 @@ $(document).ready(function () {
         });
       }
     }
-
-    /*$("#clearCart").click(function(){        
+    $(function(){ 
+      $("#clearCart").bind("click",function(){ 
         localStorage.products="";
-    });*/
+        window.location.href="index.php";
+      }); 
+    }); 
 
     $cartIcon.click(function(){
       options.showCheckoutModal ? showModal() : options.clickOnCartIcon($cartIcon, ProductManager.getAllProducts(), ProductManager.getTotalPrice(), ProductManager.getTotalQuantity());

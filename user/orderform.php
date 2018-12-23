@@ -46,7 +46,7 @@
 		<tbody>
 			<tr>
 				<td class="text-center" style="width: 50px"></td>
-				<td title="name" width="200px">商品名称</td>
+				<td title="name" width="200px" height="50px">商品名称</td>
 				<td title="num" width="200px">数量</td>
 				<td title="price" width="200px">单价</td>
 			</tr>
@@ -96,12 +96,12 @@
         								echo "<tr>";
         								echo "<td class=\"text-center\" style=\"width: 50px\">";
         								echo "<img width=\"50px\" height=\"50px\" src='".$row['picture']."'></td>";
-        								echo "<td title=\"name\" width=\"200px\">".$row["gname"]."</td>";
+        								echo "<td title=\"name\" width=\"200px\" height=\"88px\">".$row["gname"]."</td>";
         								$price=$row["price"];
         							}
         						}else if($k=="gnum"){  //订单中的商品数量
         							echo "<td title=\"num\" width=\"200px\">".$v."</td>";
-        							echo "<td title=\"price\" width=\"200px\">".$price."</td>";
+        							echo "<td title=\"price\" width=\"200px\"  height=\"88px\">".$price."</td>";
         							echo "</tr>";
         						}
     						}
@@ -109,7 +109,7 @@
 						}
 
 						echo "<tr>
-							<td class=\"text-center\" style=\"width: 50px\"></td>
+							<td class=\"text-center\" style=\"width: 50px\"  height=\"88px\"></td>
 							<td title=\"name\">总价</td>
 							<td title=\"price\"></td>
 							<td title=\"total\">¥".$db["money"]."</td>

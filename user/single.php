@@ -75,7 +75,8 @@
 					</div>
 					<div class=\"snipcart-item block\">
 						<div class=\"snipcart-thumb agileinfo_single_right_snipcart\">
-							<h4>$".$db["price"]."</h4>
+							<div>库存数量:".$db["gcount"]."</div><br/>
+							<div>单价:￥".$db["price"]."</div>
 						</div>
 						<div class=\"snipcart-details agileinfo_single_right_details\">
 							<button class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."' data-summary='summary ".$db["gid"]."'  data-price='".$db["price"]."' data-quantity='1' data-image='".$db["picture"]."'>加入购物车</button>

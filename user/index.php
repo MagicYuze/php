@@ -80,10 +80,64 @@
 			<h3>热卖商品</h3>
 			<div class="agile_top_brands_grids">
 				<?php
-					$selectSQL="select * from goods limit 4"; //前4个
+					$selectSQL="select * from goods"; //只取前4个符合标准的
 					$resultSet=mysql_query($selectSQL);
-					while($db=mysql_fetch_array($resultSet)){
-						if($db["state"]==1){   //判断状态是否
+					$number=0;
+					while(($db=mysql_fetch_array($resultSet)) && $number<4){
+
+						$json_url = $db['type'];
+						$typelist = URLdecode($json_url);
+						$json_data = json_decode($typelist);
+						$type = array();
+
+						$totalgcount=0;
+						$totalstate=0;   
+
+						foreach((array)$json_data as $item){ //判断该商品
+							$types = array(	
+							      'type' => $item->type,
+							      'price' => $item->price,
+							      'gcount' => $item->gcount,
+							      'state' => $item->state
+						    );
+							$totalstate+=$item->state;
+							$totalgcount+=$item->gcount;
+							//往二维数组追加元素
+							array_push($type,$types);
+						}
+
+						$maxprice=0;
+						foreach ($type as $key => $value) {
+							$maxprice=max($maxprice , $value['price']);
+						}
+						$minprice=$maxprice;
+						foreach ($type as $key => $value) {   //从二维数组中取数据,取个最小价格出来
+    						$minprice=min($minprice,$value["price"]);
+    					}
+
+
+						if($totalstate>0 && $totalgcount>0){
+							$number+=1;
+							echo "<div class=\"col-md-3 w3ls_w3l_banner_left\">
+						<div class=\"hover14 column\">
+						<div class=\"agile_top_brand_left_grid w3l_agile_top_brand_left_grid\">
+							<div class=\"agile_top_brand_left_grid_po\s\">
+								<img src=\"images/offer.png\" alt=\" \" class=\"img-responsive\" />
+							</div>
+							<div class=\"agile_top_brand_left_grid1\">
+								<figure>
+									<div class=\"snipcart-item block\">
+										<div class=\"snipcart-thumb\">"
+										."<a href='/php/user/single.php?gid=".$db["gid"]."'><img src='".$db["picture"]."' style='height:140px; width:140px;' alt=' ' class='img-responsive'></a>"."<p>".$db["gname"]."</p>"."<h4>￥".$minprice."-".$maxprice."</h4></div>
+										</div>
+								</figure>
+							</div>
+						</div>
+						</div>
+					</div>";
+						}
+
+						/*if($db["state"]==1){   //判断状态是否
 							echo "<div class=\"col-md-3 w3ls_w3l_banner_left\">
 						<div class=\"hover14 column\">
 						<div class=\"agile_top_brand_left_grid w3l_agile_top_brand_left_grid\">
@@ -98,16 +152,14 @@
 										."<p>".$db["gname"]."</p>"
 										."<h4>￥".$db["price"]."</h4></div>"
 
-										."<div class=\"snipcart-details\">
-											<button class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."'data-summary='".$db["introduction"]."' data-price='".$db["price"]."' data-quantity='1' data-image='".$db["picture"]."'>加入购物车</button>
-										</div>
+										."
 									</div>
 								</figure>
 							</div>
 						</div>
 						</div>
 					</div>";
-				    }
+				    }*/
 				}
 				?>
 				<!--<div class="col-md-3 top_brand_left">

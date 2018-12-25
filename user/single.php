@@ -28,6 +28,7 @@
       });
     });
   </script>
+
 <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
 <!-- start-smoth-scrolling -->
@@ -43,8 +44,16 @@
 </script>
 <style>
  	.wthree_footer_copy {
- 		  margin: 20em 0 0;
+ 		  margin: 90em 0 0;
  	}
+ 	.type{
+  		border: 2px solid #C7C0C0;
+  		cursor: pointer;
+  	}
+  	.type:hover{
+  		border: 2px solid #E21535;
+  	}
+  
 </style>
 <!-- start-smoth-scrolling -->
 
@@ -61,7 +70,25 @@
 					$gid=$_GET['gid'];
 					$selectSQL="select * from goods where gid='".$gid."'";
 					$resultSet=mysql_query($selectSQL);
+
 					while($db=mysql_fetch_array($resultSet)){
+
+						$json_url = $db['type'];
+						$typelist = URLdecode($json_url);
+						$json_data = json_decode($typelist);
+						$type = array();
+
+						foreach((array)$json_data as $item){						  
+							$types = array(	
+							      'type' => $item->type,
+							      'price' => $item->price,
+							      'gcount' => $item->gcount,
+							      'state' => $item->state
+						    );
+							//往二维数组追加元素
+							array_push($type,$types);
+						}
+
 						echo "<div class=\"agileinfo_single\">
 				<h5>".$db["gname"]."</h5>
 				<div class=\"col-md-4 agileinfo_single_left\">
@@ -74,23 +101,33 @@
 						<p>".$db["introduction"]."</p>
 					</div>
 					<div class=\"snipcart-item block\">
-						<div class=\"snipcart-thumb agileinfo_single_right_snipcart\">
-							<div>库存数量:".$db["gcount"]."</div><br/>
-							<div>单价:￥".$db["price"]."</div>
-						</div>
-						<div class=\"snipcart-details agileinfo_single_right_details\">
-							<button class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."' data-summary='summary ".$db["gid"]."'  data-price='".$db["price"]."' data-quantity='1' data-image='".$db["picture"]."'>加入购物车</button>
+						<div class=\"snipcart-thumb agileinfo_single_right_snipcart\"><div style=>机身种类:&nbsp;";
+
+						foreach ($type as $key => $value) {   //循环读
+							if($value["state"]>0 && $value["gcount"]>0){
+								echo "<span class='type' href='javascript:void(0)' onclick=\"document.getElementById('gcount').innerHTML='库存数量:'+'".$value["gcount"]."';document.getElementById('price').innerHTML='单价:￥'+'".$value["price"]."';var list=document.getElementsByClassName('type');for (var i = 0; i < list.length; i++) {list[i].style.border='2px solid #C7C0C0';}this.style.border='2px solid #E21535';  document.getElementById('addtocart').setAttribute('data-type','".$value["type"]."');document.getElementById('addtocart').setAttribute('data-price','".$value["price"]."');"."\">".$value["type"]."</span>&nbsp;";
+							}
+
+						}
+
+						echo "</div><br>";
+						echo "<div id='gcount'>库存数量:</div><br>";
+						echo "<div id='price'>单价:￥</div><br>";
+						echo "<div class=\"snipcart-details agileinfo_single_right_details\">
+							<button id='addtocart' class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."' data-summary='".$db["introduction"]."'  data-quantity='1' data-image='".$db["picture"]."' data-type='' data-price=''>加入购物车</button>
 						</div>
 					</div>
 				</div>
 				<div class=\"clearfix\"> </div>
 			</div>
-		</div>
-		<div class=\"clearfix\"></div>
-	</div>";						
+		</div>";					
 					}
-					
-				?>									
+				?>	
+				<div class="clearfix"></div><br/><br/>
+				<div>    <!--这里循环评论-->
+					<h3>买家评论:</h3>
+				</div>
+			</div>								
 		</div>
 <!-- //banner -->
 

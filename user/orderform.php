@@ -46,10 +46,10 @@
 		<tbody>
 			<tr>
 				<td class="text-center" style="width: 50px"></td>
-				<td title="name" width="200px" height="50px">商品名称</td>
-				<td title="num" width="200px">数量</td>
-				<td title="price" width="200px">单价</td>
-			</tr>
+				<td title="name" width="170px" height="50px">商品名称</td>
+				<td title="type" width="170px">机身种类</td>
+				<td title="num" width="170px">数量</td>
+				<td title="price" width="170px">单价</td>
 			<?php
 				$title=' ';
 				if(isset($_GET["type"])){  //确认收货
@@ -63,10 +63,10 @@
 					$selectSQL="select * from orders where oid='".$oid."'";
 					$resultSet=mysql_query($selectSQL);
 					while($db=mysql_fetch_array($resultSet)){
+						$dbstate=$db["state"];
 
-						//判断是否出现确认收货按钮(已完成的订单没有)
 						//判断是否出现确认收货按钮(待收货订单才有  MagicYang更正 2018年12月22日23点29分)
-						if($db["state"]==1){
+						if($dbstate==1){
 							$title="确认收货";
 						}
 
@@ -77,36 +77,57 @@
 						$item_num = count($json_data);
 						$order = array();
 
+						$checktotal=0;  //检查是否有评论资格
 						foreach((array)$json_data as $item){						  
 							$goods = array(	
 							      'gid' => $item->gid,
-							      'gnum' => $item->gnum
+							      'type' => $item->type,
+							      'gnum' => $item->gnum,
+							      'check' => $item->check
 						    );
+						    $checktotal+=$item->check;
 							//往二维数组追加元素
 							array_push($order,$goods);
 						}
 
-						$price;
-						foreach ($order as $key => $value) {   //从二维数组中取数据(特定的结构:gid,gnum顺序)
-    						foreach ($value as $k => $v) { 							
-        						if($k=="gid"){  //商品的id
-        							$sqls="select * from goods where gid='".$v."'";
-        							$result=mysql_query($sqls);
-        							while($row=mysql_fetch_array($result)){
-        								echo "<tr>";
-        								echo "<td class=\"text-center\" style=\"width: 50px\">";
-        								echo "<img width=\"50px\" height=\"50px\" src='".$row['picture']."'></td>";
-        								echo "<td title=\"name\" width=\"200px\" height=\"88px\">".$row["gname"]."</td>";
-        								$price=$row["price"];
-        							}
-        						}else if($k=="gnum"){  //订单中的商品数量
-        							echo "<td title=\"num\" width=\"200px\">".$v."</td>";
-        							echo "<td title=\"price\" width=\"200px\"  height=\"88px\">".$price."</td>";
-        							echo "</tr>";
-        						}
-    						}
 
-						}
+						if($dbstate==2 && $checktotal>0) //只有已完成的订单且未评论过的才能评论
+							echo "<td title=\"comment\" width=\"170px\">买家评论</td>";
+
+						echo "<tr>";
+
+						foreach ($order as $key => $value) { //从二维数组中取数据						
+        						$sqls="select * from goods where gid='".$value["gid"]."'";
+        						$result=mysql_query($sqls);
+        						while($row=mysql_fetch_array($result)){
+        							echo "<tr>";
+        							echo "<td class=\"text-center\" style=\"width: 50px\">";
+        							echo "<img width=\"50px\" height=\"50px\" src='".$row['picture']."'></td>";
+        							echo "<td title=\"name\" width=\"170px\" height=\"88px\">".$row["gname"]."</td>";
+
+        							echo "<td title=\"type\" width=\"170px\" height=\"88px\">".$value["type"];  //订单中的商品数量
+        							echo "<td title=\"num\" width=\"170px\">".$value["gnum"]."</td>";
+   
+
+        							$json_url = $row['type'];   //从goods取对应type的价格
+									$typelist = URLdecode($json_url);
+									$json_data = json_decode($typelist);
+
+									foreach((array)$json_data as $item){
+										if($item->type==$value["type"]){
+											echo "<td title=\"price\" width=\"170px\"  height=\"88px\">".$item->price."</td>";
+										}
+									}
+
+									if($value["check"]=="1" && $dbstate==2){
+											echo "<td title=\"comment\" width=\"170px\"  height=\"88px\"><a href='#'>立即评论</a></td>";
+									}
+
+									echo "<tr/>";
+
+        							}
+        				}
+
 
 						echo "<tr>
 							<td class=\"text-center\" style=\"width: 50px\"  height=\"88px\"></td>
@@ -118,26 +139,6 @@
 				}
 				
 			?>
-			<!--<tr>
-				<td class="text-center" style="width: 50px">
-					<img width="50px" height="50px" src="images/2.png"></td>
-				<td title="name" width="200px">百事可乐</td>
-				<td title="num" width="200px">4</td>
-				<td title="price" width="200px">¥5.00</td>
-			</tr>
-			<tr>
-				<td class="text-center" style="width: 50px">
-					<img width="50px" height="50px" src="images/2.png"></td>
-				<td title="name">百事可乐</td>
-				<td title="num">4</td>
-				<td title="price">¥5.00</td>
-			</tr>
-			<tr>
-				<td class="text-center" style="width: 50px"></td>
-				<td title="name">总价</td>
-				<td title="price"></td>
-				<td title="total">¥40.00</td>
-			</tr>-->
 		</tbody>
 	</table>
 	

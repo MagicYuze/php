@@ -43,7 +43,7 @@
           if(isset($_SESSION["user"])){    //已经登录的情况
              $uid=$_SESSION["user"];
              $title='';
-             $selectSQL="select * from orders where uid='".$uid."'";
+             $selectSQL="select o.aid,oid,odate,address,money,state from orders as o,address as a where o.uid='".$uid."' and o.aid=a.aid";
              $resultSet=mysql_query($selectSQL);
              while($db=mysql_fetch_array($resultSet)){
                 if($db["state"]==0) $title="待发货";
@@ -54,6 +54,7 @@
           <div class=\"col-md-3 w3agile_event_grid_left\"><i class=\"fa\">".$title."</i></div>
           <div class=\"col-md-9 w3agile_event_grid_right\"><p><a href='orderform.php?oid=".$db["oid"]."'><h4>订单号：".$db["oid"]."</h4></a></p>
             <p><h4>订单时间：".$db["odate"]."</h4></p>
+            <p><h4>收货地址：".$db["address"]."</h4></p>
             <h4>订单总金额：".$db["money"]."</h4>
           </div>
           <div class=\"clearfix\"> </div>
@@ -61,7 +62,8 @@
       </div>
       <div class=\"clearfix\"> </div><br/>";
           ;
-             }             
+             }
+             close_connection();      
           }
       ?>
       </div>

@@ -38,6 +38,7 @@
 		$email=$_POST["Email"];
 		$phone=$_POST["Phone"];
 
+
 		$selectSQL="select * from user where uname='".$username."'";
 		$resultSet=mysql_query($selectSQL);
 
@@ -47,8 +48,16 @@
 		}else{
 			$insertSQL="insert into user(uname,password,phone,email,state,level) values('".$username."','".$password."','".$phone."','".$email."','1','0')";
 			mysql_query($insertSQL);
-			echo "<script>alert('注册成功！')</script>";
-			echo "<script type='text/javascript'>window.location.href='login.php'</script>";
+
+			$selectSQL="select * from user where uname='".$username."'";   //为了取uid,不需注册后再登录
+			$resultSet=mysql_query($selectSQL);
+			while($db=mysql_fetch_array($resultSet)){
+				$_SESSION["user"]=$db["uid"];   //存现有user的id
+				$_SESSION["username"]=$db["uname"];  //存现有user的名字
+			}
+
+			echo "<script>alert('注册成功！');</script>";  
+			echo "<script>location.href='index.php';</script>"; //返回点击登录前的一页
 		}
 	}else if($type="change"){
 		$username=$_POST['Username'];
@@ -56,7 +65,7 @@
 		$phone=$_POST['Phone'];
 		$newpassword=$_POST['newPassword'];
 
-		$selectSQL="select * from user where uname='".$username."' and email='".$email."' and phone='".$phone."'";
+		$selectSQL="select * from user where uname='".$username."' and email='".$email."' and phone='".$phone."' and level=0";   //管理员不能在这里修改密码
 		$resultSet=mysql_query($selectSQL);
 
 		if(mysql_num_rows($resultSet)>=1){   //用户名和邮箱、手机匹配

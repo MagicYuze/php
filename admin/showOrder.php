@@ -7,7 +7,18 @@
     }
     mysql_select_db("phpfinal",$con);//选择数据库
 
-  
+    //根据时间区间查询订单
+  	if(isset($_POST['time1'])&&isset($_POST['time2'])){
+  		$time1 = $_POST['time1'];
+  		$time2 = $_POST['time2'];
+  		if($time1>$time2){
+  			$tmp = $time1;
+  			$time1 = $time2;
+  			$time2 = $tmp;
+  		}
+  		$sql = 'select * from orders where odate between"'.$time1.'" and "'.$time2.'"';
+  		$res = mysql_query($sql,$con);
+  	}
 
 
     if(isset($_GET['method'])){
@@ -98,9 +109,10 @@
 							  	  <th style="text-align:center;">订单号</th>
 							 	  <th style="text-align:center;">订单时间</th>
 							  	  <th style="text-align:center;">用户名</th>
-							  	  <th style="text-align:center;">商品*数量</th>
+							  	  <th style="text-align:center;">手机(型号)*数量</th>
+							  	  <th style="text-align:center;">评价状态</th>
 								  <th style="text-align:center;">订单金额</th>
-								  <th style="text-align:center;">订单状态</th>
+								  <th style="text-align:center;">订单状态</th>  
 								  <th style="text-align:center;">操作</th>
 							  </tr>
 						  </thead>   
@@ -128,9 +140,20 @@
 						    	$sqls = 'select * from goods where gid = '.$item->gid;
 						    	$ress = mysql_query($sqls);
 						    	$rows = mysql_fetch_assoc($ress);
+						    	if($item->check==0){
+						    		$check = '已评论';
+						    		$tip2 = 'label-success';
+						    	}
+						    	else{
+						    		$check = '未评论';
+						    		$tip2 = 'label-important';
+						    	}
 							    $goods = array(	
 							        'gname' => $rows['gname'],
-							        'gnum' => $item->gnum
+							        'gnum' => $item->gnum,
+							        'type' => $item->type,
+							        'check' => $check,
+							        'tip' => $tip2
 						    	);
 							    //往二维数组追加元素
 							    array_push($order,$goods);
@@ -155,19 +178,25 @@
    								
    							foreach($order as $k=>$goods){  
    								if($goods["gname"])
-						       		echo $goods["gname"]."*".$goods['gnum']."<br>"; 
+						       		echo $goods["gname"]."(".$goods["type"].")*".$goods['gnum']."<br>"; 
 						    }
 
 
+							echo '
+								</td>
+								<td style="text-align:center;vertical-align:middle;" class="center">';
+								//单品评价状态
+								for($i=0;$i<$item_num;$i++)
+									echo '<span class="label '.$goods["tip"].'">'.$goods["check"].'</span><br>';
+							
 							echo '
 								</td>
 								<td style="text-align:center;vertical-align:middle;" class="center">'.$money.'</td>
 								<td style="text-align:center;vertical-align:middle;" class="center">
 									<span class="label '.$tip.'">'.$state.'</span>
 								</td>
-								<td style="text-align:center;vertical-align:middle;" class="center"> 
-							';
-
+								
+								<td style="text-align:center;vertical-align:middle;" class="center"> ';
 									if($row['state']==0)
 										echo '
 									<a class="btn btn-info" href="showOrder.php?oid='.$row['oid'].'&method=changeState">

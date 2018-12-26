@@ -199,7 +199,7 @@ $(document).ready(function () {
     '</div>' +
     '<div class="modal-body">' +
     '<form action="/php/user/checkCart.php" method="post">'+
-    '<input id="json_data" type="hidden" name="json_data" value="" />'+
+    '<input id="json_data" type="hidden" name="json_data" value="'+encodeURI(localStorage.products)+'" />'+
     '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
     '<hr><div style="text-align:right;"><input type="button" name="clearCart" class="btn btn-default" value="清空购物车" id="clearCart">'+
     '</input>&nbsp;&nbsp;<input type="submit" name="submit" class="btn btn-default" value="结算"><div>' + 

@@ -55,7 +55,7 @@ $(document).ready(function () {
       var productIndex = -1;
       var products = getAllProducts();
       $.each(products, function(index, value){
-        if(value.id == id&&value.type ==type){
+        if(value.id == id&&value.type == type){//
           productIndex = index;
           return;
         }
@@ -67,16 +67,16 @@ $(document).ready(function () {
       $("#json_data").val(encodeURI(localStorage.products));
       // localStorage.product = JSON.stringify(products);
     }
-    var addProduct = function(id, name, summary, price, quantity, image,type) {
+    var addProduct = function(id,type, name, summary, price, quantity, image) {
       var products = getAllProducts();
       products.push({
         id: id,
+        type: type,
         name: name,
         summary: summary,
         price: price,
         quantity: quantity,
-        image: image,
-        type: type
+        image: image
       });
       setAllProducts(products);
     }
@@ -102,8 +102,12 @@ $(document).ready(function () {
       setAllProducts(products);
       return true;
     }
-    var setProduct = function(id, name, summary, price, quantity, image,type) {
+    var setProduct = function(id,type, name, summary, price, quantity, image) {
       if(typeof id === "undefined"){
+        console.error("id required")
+        return false;
+      }
+      if(typeof type === "undefined"){
         console.error("id required")
         return false;
       }
@@ -115,14 +119,8 @@ $(document).ready(function () {
         console.error("image required")
         return false;
       }
-      if(typeof type === "undefined"){
-        console.error("type required")
-        return false;
-      }
-      
-      alert(price);
-      if(price==0){
-        console.error("没选择类型")
+      if(!$.isNumeric(price)){
+        console.error("price is not a number")
         return false;
       }
       if(!$.isNumeric(quantity)) {
@@ -132,7 +130,7 @@ $(document).ready(function () {
       summary = typeof summary === "undefined" ? "" : summary;
 
       if(!updatePoduct(id,type)){
-        addProduct(id, name, summary, price, quantity, image,type);
+        addProduct(id, type,name, summary, price, quantity, image);
       }
     }
     var clearProduct = function(){
@@ -141,7 +139,7 @@ $(document).ready(function () {
     var removeProduct = function(id,type){
       var products = getAllProducts();
       products = $.grep(products, function(value, index) {
-        return value.id != id&&value.type !=type;
+        return value.id != id||value.type !=type;
       });
       setAllProducts(products);
     }
@@ -208,7 +206,7 @@ $(document).ready(function () {
     '<input id="json_data" type="hidden" name="json_data" value="" />'+
     '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
     '<hr><div style="text-align:right;"><input type="button" name="clearCart" class="btn btn-default" value="清空购物车" id="clearCart">'+
-    '</input>&nbsp;&nbsp;<input type="submit" name="submit" class="btn btn-default" value="立即付款"><div>' + 
+    '</input>&nbsp;&nbsp;<input type="submit" name="submit" class="btn btn-default" value="结算"><div>' + 
     '</form>'+
     '</div>' +
     '</div>' +
@@ -225,11 +223,10 @@ var drawTable = function(){
   $.each(products, function(){
     var total = this.quantity * this.price;
         total.toFixed(2);    //四舍五入，保留两位小数
-        if(this.price)
         $cartTable.append(
-          '<tr title="' + this.summary + '" data-id="' + this.id + '" data-price="' + this.price + '">' +
+          '<tr title="' + this.summary + '" data-id="' + this.id + '" data-type="' + this.type + '" data-price="' + this.price + '">' +
           '<td class="text-center" style="width: 30px;"><img width="30px" height="30px" src="' + this.image + '"/></td>' +
-          '<td>' + this.name +'('+this.type+')</td>' +
+          '<td>' + this.name + '('+this.type+')</td>' +
           '<td title="单价">￥' + this.price + '</td>' +
           '<td title="数量"><input type="number" min="1" style="width: 70px;" class="' + classProductQuantity + '" value="' + this.quantity + '"/></td>' +
           '<td title="总价" class="' + classProductTotal + '">￥' + total + '</td>' +
@@ -249,6 +246,7 @@ var drawTable = function(){
     '</tr>'
     : '<div class="alert alert-danger" role="alert" id="' + idEmptyCartMessage + '">您的购物车为空。</div>'
     );
+
       showGrandTotal();
     }
     var showModal = function(){
@@ -258,7 +256,8 @@ var drawTable = function(){
     var updateCart = function(){
       $.each($("." + classProductQuantity), function(){
         var id = $(this).closest("tr").data("id");
-        ProductManager.updatePoduct(id, $(this).val());
+        var type = $(this).closest("tr").data("type");
+        ProductManager.updatePoduct(id,type, $(this).val());
       });
     }
     var showGrandTotal = function(){
@@ -300,7 +299,7 @@ var drawTable = function(){
       var quantity = $(this).val();
 
       $(this).parent("td").next("." + classProductTotal).text("￥" + (price * quantity).toFixed(2));
-      ProductManager.updatePoduct(id, type,quantity);
+      ProductManager.updatePoduct(id,type, quantity);
 
       $cartBadge.text(ProductManager.getTotalQuantity());
       showGrandTotal();
@@ -317,6 +316,7 @@ var drawTable = function(){
     $(document).on('click', "." + classProductRemove, function(){
       var $tr = $(this).closest("tr");
       var id = $tr.data("id");
+      var type = $tr.data("type");
       $tr.hide(500, function(){
         ProductManager.removeProduct(id,type);
         drawTable();
@@ -356,14 +356,14 @@ var drawTable = function(){
       options.clickOnAddToCart($target);
 
       var id = $target.data('id');
+      var type = $target.data('type');
       var name = $target.data('name');
       var summary = $target.data('summary');
       var price = $target.data('price');
       var quantity = $target.data('quantity');
       var image = $target.data('image');
-      var type = $target.data('type');
 
-      ProductManager.setProduct(id, name, summary, price, quantity, image,type);
+      ProductManager.setProduct(id,type, name, summary, price, quantity, image);
       $cartBadge.text(ProductManager.getTotalQuantity());
     });
 

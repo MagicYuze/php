@@ -114,7 +114,7 @@
 						echo "<div id='gcount'>库存数量:</div><br>";
 						echo "<div id='price'>单价:￥</div><br>";
 						echo "<div class=\"snipcart-details agileinfo_single_right_details\">
-							<button id='addtocart' class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."' data-summary='".$db["introduction"]."'  data-quantity='1' data-image='".$db["picture"]."' data-type='' data-price=''>加入购物车</button>
+							<button onclick=\"window.location.reload();\"  id='addtocart' class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."' data-summary='".$db["introduction"]."'  data-quantity='1' data-image='".$db["picture"]."' data-type='' data-price=''>加入购物车</button>
 						</div>
 					</div>
 				</div>

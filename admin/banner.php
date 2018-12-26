@@ -36,6 +36,14 @@
 								<li><a class="submenu" href="showOrder.php?method=check&state=1"><i class="icon-truck"></i><span class="hidden-tablet">待收货订单</span></a></li><li><a class="submenu" href="showOrder.php?method=check&state=2"><i class="icon-ok"></i>已完成订单<span class="hidden-tablet"></span></a></li>
 							</ul>	
 						</li>
+						<li>
+							<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i>评论管理<span class="hidden-tablet"></span> <span class="label">3</span></a>
+							<ul>
+								<li><a class="submenu" href="showComment.php"><i class="icon-eye-open"></i>查看所有评论<span class="hidden-tablet"></span></a></li>
+								<li><a class="submenu" href="searchComment.php?type=商品"><i class="icon-eye-open"></i>查询商品评论<span class="hidden-tablet"></span></a></li>
+								<li><a class="submenu" href="searchComment.php?type=用户"><i class="icon-eye-open"></i>查询用户评论<span class="hidden-tablet"></span></a></li>
+							</ul>	
+						</li>
 						<li><a href="login.php?del"><i class="icon-lock"></i><span class="hidden-tablet">退出登录</span></a></li>
 					</ul>
 				</div>

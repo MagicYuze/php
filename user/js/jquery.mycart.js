@@ -51,11 +51,11 @@ $(document).ready(function () {
     */
     localStorage.products = localStorage.products ? localStorage.products : "";
     // localStorage.product = localStorage.product ? localStorage.product : "";
-    var getIndexOfProduct = function(id){
+    var getIndexOfProduct = function(id,type){
       var productIndex = -1;
       var products = getAllProducts();
       $.each(products, function(index, value){
-        if(value.id == id){
+        if(value.id == id&&value.type ==type){
           productIndex = index;
           return;
         }
@@ -67,7 +67,7 @@ $(document).ready(function () {
       $("#json_data").val(encodeURI(localStorage.products));
       // localStorage.product = JSON.stringify(products);
     }
-    var addProduct = function(id, name, summary, price, quantity, image) {
+    var addProduct = function(id, name, summary, price, quantity, image,type) {
       var products = getAllProducts();
       products.push({
         id: id,
@@ -75,7 +75,8 @@ $(document).ready(function () {
         summary: summary,
         price: price,
         quantity: quantity,
-        image: image
+        image: image,
+        type: type
       });
       setAllProducts(products);
     }
@@ -91,8 +92,8 @@ $(document).ready(function () {
         return [];
       }
     }
-    var updatePoduct = function(id, quantity) {
-      var productIndex = getIndexOfProduct(id);
+    var updatePoduct = function(id,type, quantity) {
+      var productIndex = getIndexOfProduct(id,type);
       if(productIndex < 0){
         return false;
       }
@@ -101,7 +102,7 @@ $(document).ready(function () {
       setAllProducts(products);
       return true;
     }
-    var setProduct = function(id, name, summary, price, quantity, image) {
+    var setProduct = function(id, name, summary, price, quantity, image,type) {
       if(typeof id === "undefined"){
         console.error("id required")
         return false;
@@ -114,8 +115,14 @@ $(document).ready(function () {
         console.error("image required")
         return false;
       }
-      if(!$.isNumeric(price)){
-        console.error("price is not a number")
+      if(typeof type === "undefined"){
+        console.error("type required")
+        return false;
+      }
+      
+      alert(price);
+      if(price==0){
+        console.error("没选择类型")
         return false;
       }
       if(!$.isNumeric(quantity)) {
@@ -124,17 +131,17 @@ $(document).ready(function () {
       }
       summary = typeof summary === "undefined" ? "" : summary;
 
-      if(!updatePoduct(id)){
-        addProduct(id, name, summary, price, quantity, image);
+      if(!updatePoduct(id,type)){
+        addProduct(id, name, summary, price, quantity, image,type);
       }
     }
     var clearProduct = function(){
       setAllProducts([]);
     }
-    var removeProduct = function(id){
+    var removeProduct = function(id,type){
       var products = getAllProducts();
       products = $.grep(products, function(value, index) {
-        return value.id != id;
+        return value.id != id&&value.type !=type;
       });
       setAllProducts(products);
     }
@@ -197,7 +204,7 @@ $(document).ready(function () {
     '<h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-shopping-cart"></span> My Cart</h4>' +
     '</div>' +
     '<div class="modal-body">' +
-    '<form action="/php/user/handleCartData.php" method="post">'+
+    '<form action="/php/user/checkCart.php" method="post">'+
     '<input id="json_data" type="hidden" name="json_data" value="" />'+
     '<table class="table table-hover table-responsive" id="' + idCartTable + '"></table>' +
     '<hr><div style="text-align:right;"><input type="button" name="clearCart" class="btn btn-default" value="清空购物车" id="clearCart">'+
@@ -218,10 +225,11 @@ var drawTable = function(){
   $.each(products, function(){
     var total = this.quantity * this.price;
         total.toFixed(2);    //四舍五入，保留两位小数
+        if(this.price)
         $cartTable.append(
           '<tr title="' + this.summary + '" data-id="' + this.id + '" data-price="' + this.price + '">' +
           '<td class="text-center" style="width: 30px;"><img width="30px" height="30px" src="' + this.image + '"/></td>' +
-          '<td>' + this.name + '</td>' +
+          '<td>' + this.name +'('+this.type+')</td>' +
           '<td title="单价">￥' + this.price + '</td>' +
           '<td title="数量"><input type="number" min="1" style="width: 70px;" class="' + classProductQuantity + '" value="' + this.quantity + '"/></td>' +
           '<td title="总价" class="' + classProductTotal + '">￥' + total + '</td>' +
@@ -241,23 +249,7 @@ var drawTable = function(){
     '</tr>'
     : '<div class="alert alert-danger" role="alert" id="' + idEmptyCartMessage + '">您的购物车为空。</div>'
     );
-
-      /*var discountPrice = options.getDiscountPrice(products, ProductManager.getTotalPrice(), ProductManager.getTotalQuantity());
-      if(products.length && discountPrice !== null) {
-        $cartTable.append(
-          '<tr style="color: red">' +
-          '<td></td>' +
-          '<td><strong>Total (including discount)</strong></td>' +
-          '<td></td>' +
-          '<td></td>' +
-          '<td><strong id="' + idDiscountPrice + '">$</strong></td>' +
-          '<td></td>' +
-          '</tr>'
-        );
-      }*/
-
       showGrandTotal();
-      //showDiscountPrice();
     }
     var showModal = function(){
       drawTable();
@@ -272,9 +264,6 @@ var drawTable = function(){
     var showGrandTotal = function(){
       $("#" + idGrandTotal).text("￥" + ProductManager.getTotalPrice());
     }
-    // var showDiscountPrice = function(){
-    //   $("#" + idDiscountPrice).text("￥" + options.getDiscountPrice(ProductManager.getAllProducts(), ProductManager.getTotalPrice(), ProductManager.getTotalQuantity()));
-    // }
 
     /*
     EVENT
@@ -307,14 +296,15 @@ var drawTable = function(){
     $(document).on("input", "." + classProductQuantity, function () {
       var price = $(this).closest("tr").data("price");
       var id = $(this).closest("tr").data("id");
+      var type = $(this).closest("tr").data("type");
       var quantity = $(this).val();
 
       $(this).parent("td").next("." + classProductTotal).text("￥" + (price * quantity).toFixed(2));
-      ProductManager.updatePoduct(id, quantity);
+      ProductManager.updatePoduct(id, type,quantity);
 
       $cartBadge.text(ProductManager.getTotalQuantity());
       showGrandTotal();
-      showDiscountPrice();
+      // showDiscountPrice();
     });
 
     $(document).on('keypress', "." + classProductQuantity, function(evt){
@@ -328,7 +318,7 @@ var drawTable = function(){
       var $tr = $(this).closest("tr");
       var id = $tr.data("id");
       $tr.hide(500, function(){
-        ProductManager.removeProduct(id);
+        ProductManager.removeProduct(id,type);
         drawTable();
         $cartBadge.text(ProductManager.getTotalQuantity());
       });
@@ -371,8 +361,9 @@ var drawTable = function(){
       var price = $target.data('price');
       var quantity = $target.data('quantity');
       var image = $target.data('image');
+      var type = $target.data('type');
 
-      ProductManager.setProduct(id, name, summary, price, quantity, image);
+      ProductManager.setProduct(id, name, summary, price, quantity, image,type);
       $cartBadge.text(ProductManager.getTotalQuantity());
     });
 

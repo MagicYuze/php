@@ -1,8 +1,4 @@
-/*
-* jQuery myCart - v1.0 - 2016-04-21
-* http://asraf-uddin-ahmed.github.io/
-* Copyright (c) 2016 Asraf Uddin Ahmed; Licensed None
-*/
+//最新版本！！！！！！！！！！！！！！！！！！！！！！！！！！
 $(document).ready(function () {
   setInterval(function() {
     $("#body").load(location.href+" #body>*","");
@@ -377,3 +373,4 @@ var drawTable = function(){
     });
   }
 })(jQuery);
+

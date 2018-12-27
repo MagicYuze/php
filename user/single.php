@@ -111,7 +111,7 @@
 						<p>".$db["introduction"]."</p>
 					</div>
 					<div class=\"snipcart-item block\">
-						<div class=\"snipcart-thumb agileinfo_single_right_snipcart\"><div style=>机身种类:&nbsp;";
+						<div class=\"snipcart-thumb agileinfo_single_right_snipcart\"><div style=>选择型号:&nbsp;";
 
 						foreach ($type as $key => $value) {   //循环读
 							if($value["state"]>0 && $value["gcount"]>0){

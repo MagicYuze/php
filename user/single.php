@@ -161,33 +161,50 @@
 						$resultSet2=mysql_query($selectComment);  //根据数据库取对应条数的
 
 						while($db=mysql_fetch_array($resultSet2)){
-								echo "<div>
-										<table>
-											<tbody>
-												<tr>
-													<td width=\"700px\">
-														<div>".$db["cInfo"]."</div>
-														<div>
-														<img id=\"example\" src='".$db["cImage"]."' style='width:50px; height:50px'/>
-														</div>
-														<div>".$db["ctime"]."</div>
-													</td>
-													<td width=\"100px\">
-														<div>".$db["type"]."</div>
-													</td>
-													<td width=\"100px\">
-														<div>";
-														$selectSQL1="select * from user where uid='".$db["uid"]."'";
-														$resultSet1=mysql_query($selectSQL1);
-														while($db1=mysql_fetch_array($resultSet1)){
-															echo "$db1[uname]";
-														}
+							$json_url = $db['type'];
+							$typelist = URLdecode($json_url);
+							$json_data = json_decode($typelist);
+							$type = array();
+
+							foreach((array)$json_data as $item){						  
+								$types = array(	
+								      'type' => $item->type
+							    );
+							}
+							//往二维数组追加元素
+							array_push($type,$types);
+
+							echo "<div>
+									<table>
+										<tbody>
+											<tr>
+												<td width=\"700px\">
+													<div>".$db["cInfo"]."</div>
+													<div>
+													<img id=\"example\" src='".$db["cImage"]."' style='width:50px; height:50px'/>
+													</div>
+													<div>".$db["ctime"]."</div>
+												</td>
+												<td width=\"100px\">
+													<div>";
+													foreach ($type as $key => $value) {
+														echo "$value[type]";
+													}
 													echo "</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-										</div>	";		
+												</td>
+												<td width=\"100px\">
+													<div>";
+													$selectSQL1="select * from user where uid='".$db["uid"]."'";
+													$resultSet1=mysql_query($selectSQL1);
+													while($db1=mysql_fetch_array($resultSet1)){
+														echo "$db1[uname]";
+													}
+												echo "</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									</div>	";		
 						}
 						$url;
 						if(isset($gid)){ //商品的url	
@@ -199,7 +216,9 @@
 						page($total_records,$page_size,$page_current,$url,null);
 						echo "</div>";
 						close_connection();
-						?>
+
+
+					 ?>
 				</div>
 			</div>								
 		</div>

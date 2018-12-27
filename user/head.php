@@ -2,7 +2,7 @@
 <?php 
 	include_once ('functions/database.php'); 
 	get_connection();
-	session_start();
+	isset($_SESSION) OR session_start();
 ?>
 
 	<div class="agileits_header">

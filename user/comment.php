@@ -1,53 +1,97 @@
 <?php
+header("Conten-type:text/html;charset=utf-8");
+include_once("functions/database.php");
+get_connection();
+session_start();
 $gid = "";
 $type = "";
-$cInfo = ""; 
-$cImage = ""; 
+$oid="";
 
-$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
-if (!$con){
-	die('Could not connect: ' . mysql_error());
+if(isset($_GET["goodsid"])){  //这是点击链接进来获取的数据，当重新提交表单时要重新获取
+	if(isset($_GET["goodstype"])){
+		if(isset($_GET["oid"])){
+			$gid=$_GET["goodsid"];
+			$type=$_GET["goodstype"];
+			$oid=$_GET["oid"];
+		}
+	}
 }
-mysql_select_db("phpfinal",$con);//选择数据库
 
+if(!empty($_POST)){   //这是点击提交按钮获取的数据
+		$cInfo=$_POST['cInfo'];
 
-
-if(isset($_POST['cInfo'])&&$_POST['cInfo']!=NULL){
-	if(isset($_FILES['cImage'])){
-		$file = $_FILES['cImage'];
-		$error = $file['error'];
+		$myfile = $_FILES['cImage'];
+		$error = $myfile['error'];
+		$cImage="";
 		switch ($error) {
 			case 0:
-				$fileName = $file['name'];
-				$fileType = $file['type'];
-				$fileSize = $file['size'];
-				$fileTmp_name = $file['tmp_name'];
-				$cImage = "/php/admin/img/goods/".$fileName; 
+				$fileName = $myfile['name'];
+				$fileTmp_name = $myfile['tmp_name'];
+				$cImage = "comment/".$fileName; 
+				move_uploaded_file($fileTmp_name, $cImage);
+				$cImage="/php/user/".$cImage;  //文件上传要么相对路径，要么就要全路径
+				break;
+			case 4:
+				$cImage="";  //不选择图片
 				break;
 			default:
-				if(!empty($_POST['cImage']))
-					$cImage = $_POST['cImage'];
-				else
-					$cImage = "/php/admin/img/goods/default.jpg";
-		}
-		if(isset($_GET["goodsid"])){
-			if(isset($_GET["goodstype"])){
-				$gid=$_GET["goodsid"];
-				$type=$_GET["goodstype"];
-			}
+				echo "<script>alert('上传图片失败');window.location.reload();</script>";
 		}
 
-		$res = mysql_query('select * from comment order by ccid DESC');
-		$ccid = mysql_fetch_assoc($res)['ccid']+1;
-		$ctime = date("Y/m/d");
-		$sql = 'INSERT INTO  comment (ccid,gid,type,ctime,uid,cInfo,cImage) VALUES ("'.$ccid.'","'.$gid.'","'.$type.'","'.$ctime.'","'.$cInfo.'","'.$cInfo.'","'.$cImage.'");';
-		$res = mysql_query($sql);
-		if(mysql_affected_rows()>0){
-			echo '<script>alert("评论成功！");window.location="orderform.php?&oid=".$_GET["oid"]."</script>';
+		//$res = mysql_query('select * from comment order by ccid DESC');
+		//$ccid = mysql_fetch_assoc($res)['ccid']+1;
+		$uid=$_SESSION["user"];
+
+		$sql;
+		if($cImage!="") //不选择图片时也能提交
+			$sql = "INSERT INTO  comment (gid,type,ctime,uid,cInfo,cImage) VALUES ('".$gid."','".$type."',now(),'".$uid."','".$cInfo."','".$cImage."')";
+		else $sql = "INSERT INTO  comment (gid,type,ctime,uid,cInfo) VALUES ('".$gid."','".$type."',now(),'".$uid."','".$cInfo."')";
+		$res = mysql_query($sql) or die(mysql_error());
+
+		if(mysql_affected_rows()>0){  //如果评论成功，不可再次评论
+			$selectSQL="select * from orders where oid='".$oid."'";
+			$resultSet=mysql_query($selectSQL);
+			$json_url='';
+			while($db=mysql_fetch_array($resultSet)){
+
+				//把数据库中url编码的转成json编码的数据,然后进行解码
+				$json_url = $db['goodslist'];
+				$goodslist = URLdecode($json_url);
+				$json_data = json_decode($goodslist);
+				$item_num = count($json_data);
+				$order = array();
+
+				foreach((array)$json_data as $item){  //已评论过的check为0
+					$gooids;
+					if($item->gid==$gid && $item->type==$type){
+						$goods = array(	
+						  'gid' => $item->gid,
+						  'type' => $item->type,
+						  'gnum' => $item->gnum,
+						  'check' => '0'
+					    );
+					}else{
+						$goods = array(	
+						  'gid' => $item->gid,
+						  'type' => $item->type,
+						  'gnum' => $item->gnum,
+						  'check' => $item->check
+					    );
+					}		  
+					//往二维数组追加元素
+					array_push($order,$goods);
+				}
+
+				$json_list = json_encode($order);
+				$json_url = URLEncode($json_list);
+			}
+			$updateSQL="update orders set goodslist='".$json_url."' where oid='".$oid."'";
+			$resultSet=mysql_query($updateSQL);
+			close_connection();
+			echo "<script>alert('评论成功！');window.location='orderform.php?&oid=".$_GET["oid"]."'</script>";
 		}else{
-			echo '<script>alert("评论失败……");</script>';// echo $sql;
+			echo '<script>alert("评论失败……");</script>';
 		}
-	} 
 }
 
 
@@ -101,18 +145,18 @@ if(isset($_POST['cInfo'])&&$_POST['cInfo']!=NULL){
 <body>
 <!-- header -->
 <?php include "head.php"?>
-
 <!-- 页面如下 -->
 <div style="float:left; margin-top:50px; margin-left:100px">
-<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data"/>
-		<fieldset>
-	<div><textarea placeholder="请输入评论" id="cInfo" name="cInfo" value="<?php echo $cInfo;?>"></textarea></div>
-	<div><input type="file" name="cImage" size="25" maxlength="100" accept=".jpg,.gif,.jpeg,.png" value="<?php echo $cImage; ?>"/><div>
+<form class="form-horizontal" action="<?php echo "/php/user/comment.php?goodsid=".$gid."&goodstype=".$type."&oid=".$oid;?>" method="post" enctype="multipart/form-data" >
+  <fieldset>
+	<div><textarea placeholder="请输入评论" id="cInfo" name="cInfo" required=""></textarea></div>
+	<div>
+		<input type="file" name="cImage" size="25" maxlength="100" accept=".jpg,.gif,.jpeg,.png"/><div>
 	<div style="float:right">
-		<button type="submit">提交</button>
-		<?php echo "<a href='orderform.php?oid=".$_GET["oid"]."'><button>返回</button></a>";?>
+		<input type="submit" name="submit" value="提交" />
+		<?php echo "<a href='/php/user/orderform.php?oid=".$oid."'><button type=\"button\">返回</button></a>";?>
 	</div>
-</fieldset>
+ </fieldset>
 </form>
 </div>
 
@@ -191,6 +235,5 @@ $(document).ready(function(){
 
   });
   </script>
- <script src="js/jquery.uploadify-3.1.min.js"></script>
 </body>
 </html>

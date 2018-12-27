@@ -120,7 +120,7 @@
 									}
 
 									if($value["check"]=="1" && $dbstate==2){
-											echo "<td title=\"comment\" width=\"170px\"  height=\"88px\"><a href='#'>立即评论</a></td>";
+											echo "<td title=\"comment\" width=\"170px\"  height=\"88px\"><a href='comment.php?goodsid=".$value["gid"]."&goodstype=".$value["type"]."&oid=".$_GET["oid"]."'>立即评论</a></td>";
 									}
 
 									echo "<tr/>";

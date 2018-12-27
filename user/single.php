@@ -53,7 +53,9 @@
   	.type:hover{
   		border: 2px solid #E21535;
   	}
-  
+  	table{border-collapse: collapse;}
+	tr{border-bottom: 1px solid gray;}
+	td{padding:20px}
 </style>
 <!-- start-smoth-scrolling -->
 
@@ -62,6 +64,14 @@
 <body>
 <!-- header -->
 	<?php include "head.php" ?>
+	<?php 
+	//获取session['user'];
+	if (!session_id()) session_start();
+	$uid = NULL;
+	if(isset($_SESSION['user'])){
+		$uid = $_SESSION['user'];
+	}
+	?>
 		<div class="w3l_banner_nav_right" style="height: 600px">
 			<div class="w3l_banner_nav_right_banner3">
 				<h3>Best Deals For New Products<span class="blink_me"></span></h3>
@@ -113,6 +123,7 @@
 						echo "</div><br>";
 						echo "<div id='gcount'>库存数量:</div><br>";
 						echo "<div id='price'>单价:￥</div><br>";
+						echo '<input type="hidden" name="session_uid" id="session_uid" value="'.$uid.'">';
 						echo "<div class=\"snipcart-details agileinfo_single_right_details\">
 							<button onclick=\"window.location.reload();\"  id='addtocart' class=\"btn btn-danger my-cart-btn hvr-sweep-to-right\" data-id='".$db["gid"]."' data-name='".$db["gname"]."' data-summary='".$db["introduction"]."'  data-quantity='1' data-image='".$db["picture"]."' data-type='' data-price=''>加入购物车</button>
 						</div>
@@ -126,6 +137,58 @@
 				<div class="clearfix"></div><br/><br/>
 				<div>    <!--这里循环评论-->
 					<h3>买家评论:</h3>
+					<?php 
+						$gid=$_GET['gid'];
+						$selectSQL="select * from comment where gid='".$gid."'";
+						$resultSet=mysql_query($selectSQL);
+
+						while($db=mysql_fetch_array($resultSet)){
+							$json_url = $db['type'];
+							$typelist = URLdecode($json_url);
+							$json_data = json_decode($typelist);
+							$type = array();
+
+							foreach((array)$json_data as $item){						  
+								$types = array(	
+								      'type' => $item->type
+							    );
+							}
+							//往二维数组追加元素
+							array_push($type,$types);
+
+							echo "<div>
+									<table>
+										<tbody>
+											<tr>
+												<td width=\"700px\">
+													<div>".$db["cInfo"]."</div>
+													<div>
+													<img id=\"example\" src='".$db["cImage"]."' style='width:50px; height:50px'/>
+													</div>
+													<div>".$db["ctime"]."</div>
+												</td>
+												<td width=\"100px\">
+													<div>";
+													foreach ($type as $key => $value) {
+														echo "$value[type]";
+													}
+													echo "</div>
+												</td>
+												<td width=\"100px\">
+													<div>";
+													$selectSQL1="select * from user where uid='".$db["uid"]."'";
+													$resultSet1=mysql_query($selectSQL1);
+													while($db1=mysql_fetch_array($resultSet1)){
+														echo "$db1[uname]";
+													}
+												echo "</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									</div>	";		
+						}
+					 ?>
 				</div>
 			</div>								
 		</div>

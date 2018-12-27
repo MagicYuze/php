@@ -1,4 +1,4 @@
-//最新版本！！！！！！！！！！！！！！！！！！！！！！！！！！
+﻿//最新版本！！！！！！！！！！！！！！！！！！！！！！！！！！
 $(document).ready(function () {
   setInterval(function() {
     $("#body").load(location.href+" #body>*","");
@@ -115,8 +115,14 @@ $(document).ready(function () {
         console.error("image required")
         return false;
       }
+      if(!$("#session_uid").val()){
+        console.error("没有登陆");
+        alert("请登陆后再添加到购物车!");
+        return false;
+      }
       if(!$.isNumeric(price)){
-        console.error("price is not a number")
+        console.error("price is not a number");
+        alert("请选择机型后再添加到购物车！");
         return false;
       }
       if(!$.isNumeric(quantity)) {

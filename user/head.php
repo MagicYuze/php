@@ -30,8 +30,8 @@
 		</div>
 		<div class="w3l_header_right">
 			<ul>
-				<li class="dropdown profile_details_drop">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i><span class="caret">
+				<li class="dropdown profile_details_drop" width="50px">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true" ></i><span>
 						<?php 
 							if(isset($_SESSION["username"])){  //登录后存的用户名
 								echo $_SESSION["username"];

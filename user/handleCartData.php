@@ -13,25 +13,25 @@ function randomkeys($length)  //产生订单号
 	return $key; 
 }
 function getaid($address){  //取地址aid
-		$aid=0;
-		$selectSQL="select * from address where address='".$address."' and uid='".$_SESSION["user"]."'";
-		$res = mysql_query($selectSQL);
+	$aid=0;
+	$selectSQL="select * from address where address='".$address."' and uid='".$_SESSION["user"]."'";
+	$res = mysql_query($selectSQL);
 		if(mysql_num_rows($res)>=1){ //已经存在
 			while($db=mysql_fetch_array($res)){
 				$aid=$db["aid"];
 			}
 		}
 		return $aid;
-}
+	}
 
-session_start();
-get_connection();
+	session_start();
+	get_connection();
 
-$totalprice=$_POST['totalprice'];
+	$totalprice=$_POST['totalprice'];
 
-if($totalprice==0){
-	echo '<script>alert("您的购物车为空，请购买后再结算！");window.location="index.php";</script>';
-}else{
+	if($totalprice==0){
+		echo '<script>alert("您的购物车为空，请购买后再结算！");window.location="index.php";</script>';
+	}else{
 	$address=$_POST['raddress'];  //这是地址的aid
 	$newaddress=$_POST["newaddress"];  //这是新增地址
 	$json_url=$_POST["goods"];  //传过来的URL形式的购物车信息
@@ -74,8 +74,8 @@ if($totalprice==0){
 
 	$sql = "insert into orders(oid,odate,uid,goodslist,state,money,aid) VALUES ('".$oid."',now(),'".$_SESSION["user"]."','".$json_url."',0,'".$totalprice."','".$address."')";
 	mysql_query($sql);
-	echo '<script>alert("付款成功，请及时查看订单！");window.location="events.php";</script>';
+	echo '<script>alert("付款成功，请及时查看订单！");localStorage.products="";window.location="events.php";</script>';
 
-	}
-	close_connection();
+}
+close_connection();
 ?>

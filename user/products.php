@@ -1,50 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>products</title>
-<!-- for-mobile-apps -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-		function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- //for-mobile-apps -->
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
-<!-- font-awesome icons -->
-<link href="css/font-awesome.css" rel="stylesheet" type="text/css" media="all" /> 
-<!-- //font-awesome icons -->
-<!-- js -->
-<script src="js/jquery-1.11.1.min.js"></script>
-<!-- //js -->
-<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
-<!-- start-smoth-scrolling -->
-<script type="text/javascript" src="js/move-top.js"></script>
-<script type="text/javascript" src="js/easing.js"></script>
-<script type="text/javascript">
-	jQuery(document).ready(function($) {
-		$(".scroll").click(function(event){		
-			event.preventDefault();
-			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+	<title>基于PHP的手机商城</title>
+	<!-- for-mobile-apps -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+	function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<!-- //for-mobile-apps -->
+	<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<!-- font-awesome icons -->
+	<link href="css/font-awesome.css" rel="stylesheet" type="text/css" media="all" /> 
+	<!-- //font-awesome icons -->
+	<!-- js -->
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<!-- //js -->
+	<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+
+	<!-- start: Favicon and Touch Icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png" />
+	<link rel="shortcut icon" href="ico/favicon.png" />
+	<!-- end: Favicon and Touch Icons -->	
+
+	<!-- start-smoth-scrolling -->
+	<script type="text/javascript" src="js/move-top.js"></script>
+	<script type="text/javascript" src="js/easing.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+			});
 		});
-	});
-</script>
-<!-- start-smoth-scrolling -->
+	</script>
+	<!-- start-smoth-scrolling -->
 </head>
-	
+
 <body>
-<!-- header -->
+	<!-- header -->
 	<?php include "head.php" ?>
 	<?php include "functions/page.php" ?>
-		<div class="w3l_banner_nav_right">
-			<div class="w3l_banner_nav_right_banner7">
-				<h3>Best Deals For New Products<span class="blink_me"></span></h3>
-			</div>
-			<?php
-				$gname;
-				$cid;
-				$cname;
+	<div class="w3l_banner_nav_right">
+	<div class="w3l_banner_nav_right_banner7">
+	<h3>基于PHP的手机商城<span class="blink_me"></span></h3>
+	</div>
+	<?php
+	$gname;
+	$cid;
+	$cname;
 
 				if(isset($_POST['gname'])){  //搜索功能,判断gname是否为空，以区分分类商品功能(POST的方式)
 					$gname=$_POST['gname'];
@@ -62,12 +71,12 @@
 				while($db=mysql_fetch_array($resultSet)){  //只是取个种类名字
 					$cname=$db["cname"];
 				}
-			?>
-			 <div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub" style="position: relative;">
-				<h3><?php echo $cname ?></h3>   <!--商品类别名称-->
-				<div class="w3ls_w3l_banner_nav_right_grid1">
-					<br/>
-				<?php
+				?>
+				<div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub" style="position: relative;">
+					<h3><?php echo $cname ?></h3>   <!--商品类别名称-->
+					<div class="w3ls_w3l_banner_nav_right_grid1">
+						<br/>
+						<?php
 					$page_size=$_GET["page_size"];  //几个为一页
 					$page_current=$_GET["page_current"];  //当前页数
 
@@ -101,14 +110,14 @@
 							      'price' => $item->price,
 							      'gcount' => $item->gcount,
 							      'state' => $item->state
-						    );*/
-						    $totalstate+=$item->state;
-							$totalgcount+=$item->gcount;
+							  );*/
+							  $totalstate+=$item->state;
+							  $totalgcount+=$item->gcount;
 							//往二维数组追加元素
 							//array_push($type,$types);
-						}
+							}
 
-						if($totalgcount==0 || $totalstate==0){
+							if($totalgcount==0 || $totalstate==0){
 							$total_records-=1;   //如果该商品所有种类库存为0或者都不展示时，总记录数-1
 							$notIngid.=$db["gid"].",";
 						}	
@@ -144,11 +153,11 @@
 
 						foreach((array)$json_data as $item){						  
 							$types = array(	
-							      'type' => $item->type,
-							      'price' => $item->price,
-							      'gcount' => $item->gcount,
-							      'state' => $item->state
-						    );
+								'type' => $item->type,
+								'price' => $item->price,
+								'gcount' => $item->gcount,
+								'state' => $item->state
+							);
 							//往二维数组追加元素
 							array_push($type,$types);
 						}
@@ -159,26 +168,26 @@
 						}
 						$minprice=$maxprice;
 						foreach ($type as $key => $value) {   //从二维数组中取数据,取个最小价格出来
-    						$minprice=min($minprice,$value["price"]);
-    					}
+							$minprice=min($minprice,$value["price"]);
+						}
 
-							echo "<div class=\"col-md-3 w3ls_w3l_banner_left\">
+						echo "<div class=\"col-md-3 w3ls_w3l_banner_left\">
 						<div class=\"hover14 column\">
 						<div class=\"agile_top_brand_left_grid w3l_agile_top_brand_left_grid\">
-							<div class=\"agile_top_brand_left_grid_po\s\">
-								<img src=\"images/offer.png\" alt=\" \" class=\"img-responsive\" />
-							</div>
-							<div class=\"agile_top_brand_left_grid1\">
-								<figure>
-									<div class=\"snipcart-item block\">
-										<div class=\"snipcart-thumb\">"
-										."<a href='/php/user/single.php?page_current=1&page_size=4&gid=".$db["gid"]."'><img src='".$db["picture"]."' style='height:140px;width:140px;' alt=' ' class='img-responsive'></a>"
-										."<p>".$db["gname"]."</p>"
-										."<h4>￥".$minprice."-".$maxprice."</h4></div>"
-										."</div>
-									</div>
-								</figure>
-							</div>
+						<div class=\"agile_top_brand_left_grid_po\s\">
+						<img src=\"images/offer.png\" alt=\" \" class=\"img-responsive\" />
+						</div>
+						<div class=\"agile_top_brand_left_grid1\">
+						<figure>
+						<div class=\"snipcart-item block\">
+						<div class=\"snipcart-thumb\">"
+						."<a href='/php/user/single.php?page_current=1&page_size=4&gid=".$db["gid"]."'><img src='".$db["picture"]."' style='height:140px;width:140px;' alt=' ' class='img-responsive'></a>"
+						."<p>".$db["gname"]."</p>"
+						."<h4>￥".$minprice."-".$maxprice."</h4></div>"
+						."</div>
+						</div>
+						</figure>
+						</div>
 						</div>
 						</div>";
 					}
@@ -186,15 +195,15 @@
 
 					$url;
 					if(isset($cid)){ //分类的url	
-				  		$url="/php/user/products.php?&page_size=".$page_size."&cid=".$cid;
-				  	}else if(isset($gname)){
-				  		$url="/php/user/products.php?&page_size=".$page_size."&gname=".$gname;
-				  	}
-				  echo "<div style='margin-top:320px; margin-left:780px;'>";
-				  page($total_records,$page_size,$page_current,$url,null);
-				  echo "</div>";
-				  close_connection();
-				?>				
+						$url="/php/user/products.php?&page_size=".$page_size."&cid=".$cid;
+					}else if(isset($gname)){
+						$url="/php/user/products.php?&page_size=".$page_size."&gname=".$gname;
+					}
+					echo "<div style='margin-top:320px; margin-left:780px;'>";
+					page($total_records,$page_size,$page_current,$url,null);
+					echo "</div>";
+					close_connection();
+					?>				
 				</div>
 			</div>
 		</div>
@@ -222,30 +231,30 @@
 						</div>
 						</div>
 					</div>-->					
-		<div class="clearfix"></div>
-	</div>
+					<div class="clearfix"></div>
+				</div>
 
-<!-- //footer -->
- 	<?php include "foot.php" ?>
-<!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
-<script>
-$(document).ready(function(){
-    $(".dropdown").hover(            
-        function() {
-            $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
-            $(this).toggleClass('open');        
-        },
-        function() {
-            $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
-            $(this).toggleClass('open');       
-        }
-    );
-});
-</script>
-<!-- here stars scrolling icon -->
-	<script type="text/javascript">
-		$(document).ready(function() {
+				<!-- //footer -->
+				<?php include "foot.php" ?>
+				<!-- Bootstrap Core JavaScript -->
+				<script src="js/bootstrap.min.js"></script>
+				<script>
+				$(document).ready(function(){
+					$(".dropdown").hover(            
+						function() {
+							$('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+							$(this).toggleClass('open');        
+						},
+						function() {
+							$('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+							$(this).toggleClass('open');       
+						}
+					);
+				});
+				</script>
+				<!-- here stars scrolling icon -->
+				<script type="text/javascript">
+				$(document).ready(function() {
 			/*
 				var defaults = {
 				containerID: 'toTop', // fading element id
@@ -254,12 +263,12 @@ $(document).ready(function(){
 				easingType: 'linear' 
 				};
 			*/
-								
-			$().UItoTop({ easingType: 'easeOutQuart' });
-								
+
+				$().UItoTop({ easingType: 'easeOutQuart' });
+
 			});
 
-	</script>
+				</script>
 <!-- //here ends scrolling icon -->
 </body>
 </html>

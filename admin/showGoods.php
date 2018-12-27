@@ -45,14 +45,14 @@ include "checkLogin.php";
     		// $newURI = json_encode($types, JSON_UNESCAPED_UNICODE);
     		$sql = 'UPDATE goods SET type = "'.$newURI.'" WHERE gid = '.$_GET['gid'];
     		// echo $sql;
-    		}else{//如果是空数组直接把整个基于PHP的手机商城全都删掉
+    		}else{//如果是空数组直接把整个手机全都删掉
     			$sql = 'delete from goods where gid = '.$_GET['gid'];
     		}
     		$res = mysql_query($sql);
     		if(mysql_affected_rows()>0)
-    			echo "<script>alert('恭喜您，删除该型号基于PHP的手机商城成功！');window.location='showGoods.php'</script>";
+    			echo "<script>alert('恭喜您，删除该型号手机成功！');window.location='showGoods.php'</script>";
     		else
-    			echo "<script>alert('不好意思啊，删除该型号基于PHP的手机商城失败了！');window.location='showGoods.php'</script>";
+    			echo "<script>alert('不好意思啊，删除该型号手机失败了！');window.location='showGoods.php'</script>";
     	}else if($_GET['method']=="changeState"){
     		$goods_type = $_GET['type'];
     		$sql = 'select * from goods where gid='.$_GET['gid'];
@@ -89,7 +89,7 @@ include "checkLogin.php";
     		$sql = "UPDATE goods SET type=\"".$newURI."\" where gid=".$_GET['gid'];
     		mysql_query($sql);
     		// echo $sql;
-    		echo "<script>alert('恭喜您，修改该种类基于PHP的手机商城状态成功！');window.location='showGoods.php'</script>";
+    		echo "<script>alert('恭喜您，修改该种类手机状态成功！');window.location='showGoods.php'</script>";
     	}
     }
 
@@ -101,7 +101,7 @@ include "checkLogin.php";
 
     	<!-- start: Meta -->
     	<meta charset="utf-8" />
-    	<title>基于PHP的购物商城</title>
+    	<title>基于PHP的手机商城</title>
     	<!-- end: Meta -->
 
     	<!-- start: Mobile Specific -->
@@ -151,18 +151,18 @@ include "checkLogin.php";
 		<div class="row-fluid">		
 		<div class="box span12">
 		<div class="box-header" data-original-title="">
-		<h2><i class="icon-sitemap"></i><span class="break"></span>基于PHP的手机商城型号</h2>
+		<h2><i class="icon-sitemap"></i><span class="break"></span>手机型号</h2>
 		</div>
 		<div class="box-content">
 		<table class="table table-striped table-bordered bootstrap-datatable datatable">
 		<thead>
 		<tr>
-		<th style="text-align:center;">基于PHP的手机商城图片</th>
-		<th style="text-align:center;">基于PHP的手机商城名称</th>
-		<th style="text-align:center;">基于PHP的手机商城品牌</th>
-		<th style="text-align:center;">基于PHP的手机商城型号</th>
-		<th style="text-align:center;">基于PHP的手机商城单价</th>
-		<th style="text-align:center;">基于PHP的手机商城库存</th>
+		<th style="text-align:center;">手机图片</th>
+		<th style="text-align:center;">手机名称</th>
+		<th style="text-align:center;">手机品牌</th>
+		<th style="text-align:center;">手机型号</th>
+		<th style="text-align:center;">手机单价</th>
+		<th style="text-align:center;">手机库存</th>
 		<th style="text-align:center;">销售状态</th>
 		<th style="text-align:center;">操作</th>
 		</tr>
@@ -194,27 +194,27 @@ include "checkLogin.php";
 			<td style="text-align:center;vertical-align:middle;line-height:30px;" class="center">'.$row['gname'].'</td>
 			<td style="text-align:center;vertical-align:middle;line-height:30px;" class="center">'.$category[$row['cid']].'</td>
 			<td style="text-align:center;vertical-align:middle;line-height:30px;" class="center">';
-			//显示基于PHP的手机商城详情
+			//显示手机详情
 			for($i=0;$i<$type_num;$i++){
 				echo $types[$i]['type'];
 				echo '<br>';
 			}
 			echo '
 			</td><td style="text-align:center;vertical-align:middle;line-height:30px;" class="center">';
-			//显示基于PHP的手机商城价格
+			//显示手机价格
 			for($i=0;$i<$type_num;$i++){
 				echo $types[$i]['price'].'元';
 				echo '<br>';
 			}
 			echo '
 			</td><td style="text-align:center;vertical-align:middle;line-height:30px;" class="center">';
-			//显示基于PHP的手机商城价格
+			//显示手机价格
 			for($i=0;$i<$type_num;$i++){
 				echo $types[$i]['gcount'].'部';
 				echo '<br>';
 			}
 			echo '</td><td style="text-align:center;vertical-align:middle;line-height:30px;" class="center">';
-			//显示基于PHP的手机商城状态
+			//显示手机状态
 			for($i=0;$i<$type_num;$i++){
 				$state = $types[$i]['state'];
 				if($state==0) echo '<span class="label label-important">已停售</span><br>';

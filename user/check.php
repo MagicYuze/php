@@ -1,17 +1,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php  //邮箱验证码这种要多线程
-	session_start();
-	include_once("functions/database.php");
+session_start();
+include_once("functions/database.php");
 	//include_once("mail/sendmail.php");
-	get_connection();
-	$type=$_GET['type'];
+get_connection();
+$type=$_GET['type'];
 	//$code='';   //邮箱验证码
 
-	if($type=="login"){
-		$username=$_POST["Username"];
-		$password=$_POST["Password"];
-		$selectSQL="select * from user where uname='".$username."' and password='".$password."'";
-		$resultSet=mysql_query($selectSQL);
+if($type=="login"){
+	$username=$_POST["Username"];
+	$password=$_POST["Password"];
+	$selectSQL="select * from user where uname='".$username."' and password='".$password."'";
+	$resultSet=mysql_query($selectSQL);
 		if(mysql_num_rows($resultSet)<1){   //找不到
 			echo "<script>alert('账号密码错误！')</script>";
 		}
@@ -23,7 +23,7 @@
 					$_SESSION["username"]=$db["uname"];  //存现有user的名字
 
 					echo "<script>alert('登录成功！')</script>";
-            		echo "<script>window.location.href='index.php'</script>";
+					echo "<script>window.location.href='index.php'</script>";
 				}else if($db["state"]==0){
 					echo "<script>alert('已停用，请联系管理员！')</script>";
 				}else if($db["level"]==1){  //避免登录管路员的账号
@@ -78,4 +78,4 @@
 		echo "<script type='text/javascript'>window.location.href='login.php'</script>";
 	}
 
-?>
+	?>

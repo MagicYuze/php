@@ -38,7 +38,7 @@
 	
 	<!-- start: Meta -->
 	<meta charset="utf-8" />
-	<title>基于PHP的购物商城</title>
+	<title>基于PHP的手机商城</title>
 	<!-- end: Meta -->
 	
 	<!-- start: Mobile Specific -->
@@ -96,7 +96,7 @@
 							  <tr>
 							  	  <th style="text-align:center;">用户ID</th>
 								  <th style="text-align:center;">用户名称</th>
-								  <th style="text-align:center;">基于PHP的手机商城号</th>
+								  <th style="text-align:center;">手机号</th>
 								  <th style="text-align:center;">邮箱</th>
 								  <th style="text-align:center;">权限</th>
 								  <th style="text-align:center;">状态</th>

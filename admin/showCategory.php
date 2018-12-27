@@ -37,7 +37,7 @@ include "checkLogin.php";
     	
     	<!-- start: Meta -->
     	<meta charset="utf-8" />
-    	<title>基于PHP的购物商城</title>
+    	<title>基于PHP的手机商城</title>
     	<!-- end: Meta -->
     	
     	<!-- start: Mobile Specific -->

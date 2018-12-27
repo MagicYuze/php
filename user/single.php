@@ -64,6 +64,7 @@
 <body>
 <!-- header -->
 	<?php include "head.php" ?>
+	<?php include "functions/page.php" ?>
 	<?php 
 	//获取session['user'];
 	if (!session_id()) session_start();
@@ -142,62 +143,67 @@
 						$selectSQL="select * from comment where gid='".$gid."'";
 						$resultSet=mysql_query($selectSQL);
 
-						while($db=mysql_fetch_array($resultSet)){
-							$json_url = $db['type'];
-							$typelist = URLdecode($json_url);
-							$json_data = json_decode($typelist);
-							$type = array();
-
-							foreach((array)$json_data as $item){						  
-								$types = array(	
-								      'type' => $item->type
-							    );
-							}
-							//往二维数组追加元素
-							array_push($type,$types);
-
-							echo "<div>
-									<table>
-										<tbody>
-											<tr>
-												<td width=\"700px\">
-													<div>".$db["cInfo"]."</div>
-													<div>
-													<img id=\"example\" src='".$db["cImage"]."' style='width:50px; height:50px'/>
-													</div>
-													<div>".$db["ctime"]."</div>
-												</td>
-												<td width=\"100px\">
-													<div>";
-													foreach ($type as $key => $value) {
-														echo "$value[type]";
-													}
-													echo "</div>
-												</td>
-												<td width=\"100px\">
-													<div>";
-													$selectSQL1="select * from user where uid='".$db["uid"]."'";
-													$resultSet1=mysql_query($selectSQL1);
-													while($db1=mysql_fetch_array($resultSet1)){
-														echo "$db1[uname]";
-													}
-												echo "</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-									</div>	";		
+						$page_size=$_GET["page_size"];  //几个为一页
+						$page_current=$_GET["page_current"];  //当前页数
+						$selectComment='';									
+						if(isset($gid)){ //评论的sql语句				
+							$selectComment="select * from comment where gid='".$_GET["gid"]."'";   
 						}
-					 ?>
+						$resultSet2=mysql_query($selectComment);
+						$total_records=0;
+						$db=mysql_fetch_array($resultSet2);
+						$total_records+=mysql_num_rows($resultSet2);  //总记录条数(去掉所有种类库存为0的)
+					
+						$start_records=($page_current-1)*$page_size;  //limit开始的条数
+						$end_records=$page_size;  //limit的条数
+
+						$selectComment="select * from comment where gid='".$gid."'limit ".$start_records.",".$end_records;
+						$resultSet2=mysql_query($selectComment);  //根据数据库取对应条数的
+
+						while($db=mysql_fetch_array($resultSet2)){
+								echo "<div>
+										<table>
+											<tbody>
+												<tr>
+													<td width=\"700px\">
+														<div>".$db["cInfo"]."</div>
+														<div>
+														<img id=\"example\" src='".$db["cImage"]."' style='width:50px; height:50px'/>
+														</div>
+														<div>".$db["ctime"]."</div>
+													</td>
+													<td width=\"100px\">
+														<div>".$db["type"]."</div>
+													</td>
+													<td width=\"100px\">
+														<div>";
+														$selectSQL1="select * from user where uid='".$db["uid"]."'";
+														$resultSet1=mysql_query($selectSQL1);
+														while($db1=mysql_fetch_array($resultSet1)){
+															echo "$db1[uname]";
+														}
+													echo "</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										</div>	";		
+						}
+						$url;
+						if(isset($gid)){ //商品的url	
+							$url="/php/user/single.php?&page_size=".$page_size."&gid=".$gid;
+						}else if(isset($cname)){
+							$url="/php/user/single.php?&page_size=".$page_size."&cname=".$cname;
+						}
+						echo "<div style='margin-top:20px; margin-left:780px;'>";
+						page($total_records,$page_size,$page_current,$url,null);
+						echo "</div>";
+						close_connection();
+						?>
 				</div>
 			</div>								
 		</div>
 <!-- //banner -->
-
-<!-- footer -->
-	
-	<?php include "foot.php" ?>
-<!-- //footer -->
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 <script>

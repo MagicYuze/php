@@ -128,7 +128,7 @@
 								<figure>
 									<div class=\"snipcart-item block\">
 										<div class=\"snipcart-thumb\">"
-										."<a href='/php/user/single.php?gid=".$db["gid"]."'><img src='".$db["picture"]."' style='height:140px; width:140px;' alt=' ' class='img-responsive'></a>"."<p>".$db["gname"]."</p>"."<h4>￥".$minprice."-".$maxprice."</h4></div>
+										."<a href='/php/user/single.php?page_current=1&page_size=4&gid=".$db["gid"]."'><img src='".$db["picture"]."' style='height:140px; width:140px;' alt=' ' class='img-responsive'></a>"."<p>".$db["gname"]."</p>"."<h4>￥".$minprice."-".$maxprice."</h4></div>
 										</div>
 								</figure>
 							</div>

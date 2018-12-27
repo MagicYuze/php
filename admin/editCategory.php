@@ -33,7 +33,7 @@
 		    $res = mysql_query($sql);
 
 		    if(mysql_affected_rows()>0){
-		    	echo '<script>alert("恭喜您，添加分类成功！");window.location="showCategory.php"</script>';
+		    	echo '<script>alert("恭喜您，添加品牌成功！");window.location="showCategory.php"</script>';
 		    }else{
 		    	echo "<script>alert('$res');</script>";
 		    }
@@ -42,9 +42,9 @@
 	    	$sql = 'UPDATE category SET cname = "'.$cname.'"WHERE cid = '.$cid;
 	    	$res = mysql_query($sql);
 	    	if(mysql_affected_rows()>0){
-		    	echo '<script>alert("恭喜您，修改分类信息成功！");window.location="showCategory.php"</script>';
+		    	echo '<script>alert("恭喜您，修改品牌信息成功！");window.location="showCategory.php"</script>';
 		    }else{
-		    	echo "<script>alert('不好意思，修改分类信息失败……');</script>";
+		    	echo "<script>alert('不好意思，修改品牌信息失败……');</script>";
 		    }
 	    	mysql_close($con);
 	    }
@@ -58,7 +58,7 @@
 	
 	<!-- start: Meta -->
 	<meta charset="utf-8" />
-	<title>基于PHP的购物商城</title>
+	<title>基于PHP的手机商城</title>
 	<!-- end: Meta -->
 	
 	<!-- start: Mobile Specific -->
@@ -107,13 +107,13 @@
 			<div class="row-fluid">
 				<div class="box span12">
 					<div class="box-header">
-						<h2><i class="icon-edit"></i>商品分类</h2>
+						<h2><i class="icon-edit"></i>手机品牌</h2>
 					</div>
 					<div class="box-content">
 						<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"/>
 						  <fieldset>
 							<div class="control-group">
-							  <label class="control-label" for="cname">分类名称：</label>
+							  <label class="control-label" for="cname">品牌名称：</label>
 							  <div class="controls">
 							  	<input type="hidden" name="cid" value="<?php echo $cid;?>">
 								<input type="text" class="span3" id="cname" name="cname" value="<?php echo $cname;?>"/>

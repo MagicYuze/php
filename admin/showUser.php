@@ -96,7 +96,7 @@
 							  <tr>
 							  	  <th style="text-align:center;">用户ID</th>
 								  <th style="text-align:center;">用户名称</th>
-								  <th style="text-align:center;">手机号</th>
+								  <th style="text-align:center;">基于PHP的手机商城号</th>
 								  <th style="text-align:center;">邮箱</th>
 								  <th style="text-align:center;">权限</th>
 								  <th style="text-align:center;">状态</th>

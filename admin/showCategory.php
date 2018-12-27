@@ -13,11 +13,11 @@ include "checkLogin.php";
     		$sql = "select * from goods where cid=".$_GET['cid'];
     		$res = mysql_query($sql);
     		if(mysql_num_rows($res)>0)
-    			echo "<script>alert('不好意思，此分类还有商品，无法删除！');window.location='showCategory.php'</script>";
+    			echo "<script>alert('不好意思，此品牌还有基于PHP的手机商城，无法删除！');window.location='showCategory.php'</script>";
     		else{
     			$sql = "delete from category where cid=".$_GET['cid'];
     			mysql_query($sql);
-    			echo "<script>alert('恭喜您，删除分类成功！');window.location='showCategory.php'</script>";
+    			echo "<script>alert('恭喜您，删除品牌成功！');window.location='showCategory.php'</script>";
     		}
     	}else if($_GET['method']=="changeState"){
     		if($_GET['state']==1)
@@ -25,7 +25,7 @@ include "checkLogin.php";
     		else if($_GET['state']==0)
     			$sql = "UPDATE category SET state=1 where cid=".$_GET['cid'];
     		mysql_query($sql);
-    		echo "<script>alert('恭喜您，修改该分类状态成功！');window.location='showCategory.php'</script>";
+    		echo "<script>alert('恭喜您，修改该品牌状态成功！');window.location='showCategory.php'</script>";
     	}
     }
     mysql_close($con);
@@ -87,14 +87,14 @@ include "checkLogin.php";
 		<div class="row-fluid">		
 		<div class="box span12">
 		<div class="box-header" data-original-title="">
-		<h2><i class="icon-sitemap"></i><span class="break"></span>商品分类</h2>
+		<h2><i class="icon-sitemap"></i><span class="break"></span>基于PHP的手机商城品牌</h2>
 		</div>
 		<div class="box-content">
 		<table class="table table-striped table-bordered bootstrap-datatable datatable">
 		<thead>
 		<tr>
-		<th style="text-align:center;">分类ID</th>
-		<th style="text-align:center;">分类名称</th>
+		<th style="text-align:center;">品牌ID</th>
+		<th style="text-align:center;">品牌名称</th>
 		<th style="text-align:center;">状态</th>
 		<th style="text-align:center;">操作</th>
 		</tr>

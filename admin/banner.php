@@ -14,17 +14,17 @@
 							</ul>	
 						</li>
 						<li>
-							<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i>分类管理<span class="hidden-tablet"></span> <span class="label">2</span></a>
+							<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i>品牌管理<span class="hidden-tablet"></span> <span class="label">2</span></a>
 							<ul>
-								<li><a class="submenu" href="showCategory.php"><i class="icon-eye-open"></i>查看分类<span class="hidden-tablet"></span></a></li>
-								<li><a class="submenu" href="editCategory.php"><i class="icon-signin"></i><span class="hidden-tablet">添加分类</span></a></li>
+								<li><a class="submenu" href="showCategory.php"><i class="icon-eye-open"></i>查看品牌<span class="hidden-tablet"></span></a></li>
+								<li><a class="submenu" href="editCategory.php"><i class="icon-signin"></i><span class="hidden-tablet">添加品牌</span></a></li>
 							</ul>	
 						</li>
 						<li>
-							<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i>商品管理<span class="hidden-tablet"></span> <span class="label">2</span></a>
+							<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i>手机管理<span class="hidden-tablet"></span> <span class="label">2</span></a>
 							<ul>
-								<li><a class="submenu" href="showGoods.php"><i class="icon-eye-open">查看商品</i><span class="hidden-tablet"></span></a></li>
-								<li><a class="submenu" href="editGoods.php"><i class="icon-signin"></i><span class="hidden-tablet">添加商品</span></a></li>
+								<li><a class="submenu" href="showGoods.php"><i class="icon-eye-open">查看手机</i><span class="hidden-tablet"></span></a></li>
+								<li><a class="submenu" href="editGoods.php"><i class="icon-signin"></i><span class="hidden-tablet">添加手机</span></a></li>
 							</ul>	
 						</li>
 						<li>
@@ -40,7 +40,7 @@
 							<a class="dropmenu" href="#"><i class="icon-folder-close-alt"></i>评论管理<span class="hidden-tablet"></span> <span class="label">3</span></a>
 							<ul>
 								<li><a class="submenu" href="showComment.php"><i class="icon-eye-open"></i>查看所有评论<span class="hidden-tablet"></span></a></li>
-								<li><a class="submenu" href="searchComment.php?type=商品"><i class="icon-eye-open"></i>查询商品评论<span class="hidden-tablet"></span></a></li>
+								<li><a class="submenu" href="searchComment.php?type=手机"><i class="icon-eye-open"></i>查询手机评论<span class="hidden-tablet"></span></a></li>
 								<li><a class="submenu" href="searchComment.php?type=用户"><i class="icon-eye-open"></i>查询用户评论<span class="hidden-tablet"></span></a></li>
 							</ul>	
 						</li>

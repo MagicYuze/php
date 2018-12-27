@@ -7,6 +7,7 @@ $type = "";
 $cname = "-- 请选择类别 --";
 $introduction = "";
 $picture = "";
+$method = "";
 
 
 	$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
@@ -24,7 +25,7 @@ $picture = "";
     }
 
 
-    if(isset($_GET['gid'])&&isset($_GET['type'])&&!isset($_GET['method'])){
+    if(isset($_GET['gid'])&&isset($_GET['type'])){
 		$con = mysql_connect("118.89.24.240","php","123456");//连接数据库
 		if (!$con){
 			die('Could not connect: ' . mysql_error());
@@ -118,7 +119,7 @@ $picture = "";
 	    		// echo $sql;
 	    	}
 	    	mysql_close($con);
-	    }else if($flag > 0){
+	    }else if($flag > 0 && strcmp($_POST['method'], "edit")){
 	    	$sql = 'select * from goods where gname ="'.$_POST['gname'].'" AND cid = '.$_POST['cid'];
 	    	$res = mysql_query($sql);
 	    	$row = mysql_fetch_array($res);
@@ -209,7 +210,7 @@ $picture = "";
 
 		<!-- start: Meta -->
 		<meta charset="utf-8" />
-		<title>基于PHP的购物商城</title>
+		<title>基于PHP的手机商城</title>
 		<!-- end: Meta -->
 
 		<!-- start: Mobile Specific -->
@@ -258,7 +259,7 @@ $picture = "";
 		<div class="row-fluid">
 		<div class="box span12">
 		<div class="box-header">
-		<h2><i class="icon-edit"></i>手机分类</h2>
+		<h2><i class="icon-edit"></i><?php if(isset($_GET['method'])) echo "修改";else echo "添加"?>手机</h2>
 		</div>
 		<div class="box-content">
 		<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data"/>
@@ -272,7 +273,7 @@ $picture = "";
 		</div>
 		</div>
 		<div class="control-group">
-		<label class="control-label" for="cname">手机类别：</label>
+		<label class="control-label" for="cname">手机品牌：</label>
 		<div class="controls">
 		<select id="cname" name="cid">
 		<option selected="selected" value="<?php echo $cid?>"><?php echo $cname?></option>
@@ -286,10 +287,11 @@ $picture = "";
 	</div>
 </div>
 <div class="control-group">
-	<label class="control-label" for="type">手机详情：</label>
+	<label class="control-label" for="type">手机机型：</label>
 	<div class="controls">
 		<input type="text" class="span3" id="type" name="type" value="<?php if(isset($_GET['type'])) echo $type['type'];?>"/>
 		<input type="hidden" id="typeOld" name="typeOld" value="<?php if(isset($_GET['type'])) echo $type['type'];?>"/>
+		<input type="hidden" name="method" value="<?php if(isset($_GET['method'])) echo $_GET['method'];?>">
 	</div>
 </div>     
 <div class="control-group">

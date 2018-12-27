@@ -109,7 +109,7 @@
 							  	  <th style="text-align:center;">订单号</th>
 							 	  <th style="text-align:center;">订单时间</th>
 							  	  <th style="text-align:center;">用户名</th>
-							  	  <th style="text-align:center;">手机(型号)*数量</th>
+							  	  <th style="text-align:center;">基于PHP的手机商城(型号)*数量</th>
 							  	  <th style="text-align:center;">评价状态</th>
 								  <th style="text-align:center;">订单金额</th>
 								  <th style="text-align:center;">订单状态</th>  

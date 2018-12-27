@@ -140,39 +140,25 @@
 					<h3>买家评论:</h3>
 					<?php 
 						$gid=$_GET['gid'];
-						$selectSQL="select * from comment where gid='".$gid."'";
-						$resultSet=mysql_query($selectSQL);
-
+						
 						$page_size=$_GET["page_size"];  //几个为一页
 						$page_current=$_GET["page_current"];  //当前页数
 						$selectComment='';									
 						if(isset($gid)){ //评论的sql语句				
 							$selectComment="select * from comment where gid='".$_GET["gid"]."'";   
 						}
-						$resultSet2=mysql_query($selectComment);
+						$resultSet=mysql_query($selectComment);
 						$total_records=0;
-						$db=mysql_fetch_array($resultSet2);
-						$total_records+=mysql_num_rows($resultSet2);  //总记录条数(去掉所有种类库存为0的)
+						$db=mysql_fetch_array($resultSet);
+						$total_records+=mysql_num_rows($resultSet);  //总记录条数(去掉所有种类库存为0的)
 					
 						$start_records=($page_current-1)*$page_size;  //limit开始的条数
 						$end_records=$page_size;  //limit的条数
 
 						$selectComment="select * from comment where gid='".$gid."'limit ".$start_records.",".$end_records;
-						$resultSet2=mysql_query($selectComment);  //根据数据库取对应条数的
+						$resultSet=mysql_query($selectComment);  //根据数据库取对应条数的
 
-						while($db=mysql_fetch_array($resultSet2)){
-							$json_url = $db['type'];
-							$typelist = URLdecode($json_url);
-							$json_data = json_decode($typelist);
-							$type = array();
-
-							foreach((array)$json_data as $item){						  
-								$types = array(	
-								      'type' => $item->type
-							    );
-							}
-							//往二维数组追加元素
-							array_push($type,$types);
+						while($db=mysql_fetch_array($resultSet)){
 
 							echo "<div>
 									<table>
@@ -186,11 +172,7 @@
 													<div>".$db["ctime"]."</div>
 												</td>
 												<td width=\"100px\">
-													<div>";
-													foreach ($type as $key => $value) {
-														echo "$value[type]";
-													}
-													echo "</div>
+													<div>".$db["type"]."</div>
 												</td>
 												<td width=\"100px\">
 													<div>";
@@ -223,6 +205,45 @@
 			</div>								
 		</div>
 <!-- //banner -->
+<script type='text/javascript' src="js/jquery.mycart.js"></script>
+ <script type="text/javascript">
+    $(function () {
+
+      var goToCartIcon = function($addTocartBtn){
+        var $cartIcon = $(".my-cart-icon");
+        var $image = $('<img width="30px" height="30px" src="' + $addTocartBtn.data("image") + '"/>').css({"position": "fixed", "z-index": "999"});
+        $addTocartBtn.prepend($image);
+        var position = $cartIcon.position();
+        $image.animate({
+         
+        }, 500 , "linear", function() {
+          $image.remove();
+        });
+      }
+
+      $('.my-cart-btn').myCart({
+        classCartIcon: 'my-cart-icon',
+        classCartBadge: 'my-cart-badge',
+        affixCartIcon: true,
+        checkoutCart: function(products) {
+          $.each(products, function(){
+            console.log(this);
+          });
+        },
+        clickOnAddToCart: function($addTocart){
+          goToCartIcon($addTocart);
+        },
+        getDiscountPrice: function(products) {
+          var total = 0;
+          $.each(products, function(){
+            total += this.quantity * this.price;
+          });
+          return total * 1;
+        }
+      });
+
+    });
+  </script>
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 <script>

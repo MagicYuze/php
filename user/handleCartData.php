@@ -65,6 +65,43 @@ function getaid($address){  //取地址aid
 			'check' =>'1'   //代表可评论
 		);
 		array_push($cart,$goods);
+
+
+		$sql_checkGoods = 'select * from goods where gid ='.$item->id;//查找购买商品的信息
+		$goods_res = mysql_query($sql_checkGoods);
+		$goods_row = mysql_fetch_assoc($goods_res);
+		$goods_type = $goods_row['type'];
+		//对所购商品进行减少
+		$goods_type_json_decode = json_decode($goods_type);
+
+		$goods_change = array();
+		foreach((array)$goods_type_json_decode as $emmm){
+			// echo $emmm->type."<br>";
+			// echo $item->type."<br>";
+			if(!strcmp($emmm->type,$item->type)){
+				// echo "ok";
+				if($emmm->gcount<$item->quantity){echo '<script>alert("不好意思,'.$goods_row['gname'].'('.$item->type.') 库存不足！");window.location="index.php";</script>';}
+				$change_goods = array(
+					'type' => $emmm->type,
+					'price' => $emmm->price,
+					'gcount' => $emmm->gcount-$item->quantity,
+					'state' => $emmm->state
+				);
+			}else{
+				$change_goods = array(
+					'type' => $emmm->type,
+					'price' => $emmm->price,
+					'gcount' => $emmm->gcount,
+					'state' => $emmm->state
+				);
+			}
+			array_push($goods_change, $change_goods);
+		}
+		$json_goods_list = json_encode($goods_change, JSON_UNESCAPED_UNICODE);
+		$json_goods_url = URLEncode($json_goods_list);
+		$sql_changeGoodsGcount = 'UPDATE goods SET type="'.$json_goods_url.'" where gid='.$item->id;
+		// echo $sql_changeGoodsGcount;
+		mysql_query($sql_changeGoodsGcount);
 	}
 
 	$json_list = json_encode($cart);

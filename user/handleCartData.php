@@ -72,7 +72,7 @@ function getaid($address){  //取地址aid
 		$goods_row = mysql_fetch_assoc($goods_res);
 		$goods_type = $goods_row['type'];
 		//对所购商品进行减少
-		$goods_type_json_decode = json_decode($goods_type);
+		$goods_type_json_decode = json_decode(URLdecode($goods_type));
 
 		$goods_change = array();
 		foreach((array)$goods_type_json_decode as $emmm){
@@ -104,7 +104,7 @@ function getaid($address){  //取地址aid
 		mysql_query($sql_changeGoodsGcount);
 	}
 
-	$json_list = json_encode($cart);
+	$json_list = json_encode($cart, JSON_UNESCAPED_UNICODE);
 	$json_url = URLEncode($json_list);
 
 	$oid = randomkeys(20);

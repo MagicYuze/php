@@ -56,7 +56,7 @@
 	<tr>
 	<td class="text-center" style="width: 50px"></td>
 	<td title="name" width="170px" height="50px">商品名称</td>
-	<td title="type" width="170px">机身型号</td>
+	<td title="type" width="170px">机身型号<f/td>
 	<td title="num" width="170px">数量</td>
 	<td title="price" width="170px">单价</td>
 	<?php
